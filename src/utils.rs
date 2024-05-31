@@ -64,7 +64,7 @@ pub fn get_path() -> String {
     let path: String;
     let args: Vec<_> = args().collect();
     match OS {
-        _ if args.len() == 3 => path = args[2].clone(),
+        _ if args.len() == 4 => path = args[3].clone(),
         "windows" => path = "D:/grapper/".to_owned(),
         "linux" => path = "/mnt/d/grapper/".to_owned(),
         _ => panic!("cant get path"),
@@ -79,10 +79,10 @@ pub fn get_path() -> String {
 // bool cuz no need for more options yet
 pub fn get_choice() -> bool {
     let args: Vec<_> = args().collect();
-    if args.len() < 2 {
+    if args.len() < 3 {
         return false;
     }
-    match &args[1].parse::<u8>() {
+    match &args[2].parse::<u8>() {
         Ok(n) => match n {
             0 => return false,
             1 => return true,

@@ -6,10 +6,17 @@ Program to move images based on their dimensions and pixel count
 can be run using `cargo run`
 
 binary file can be found at `./target/debug/rustmove` after compiling with cargo
+feel free to move this file wherever you want
 
 # Usage 
-`rustmove <choice> <path>`
-### choice 
+`rustmove <choice1> <choice2> <path>`
+### choice1
+- 1 => call remove_tmps
+- anything else => doesnt call remove_tmps
+
+remove_tmps is a function that will walk through the directories to remove abandonned tmp files
+
+### choice2 
 - 0 => sort the files
 - 1 => scramble the files into their respective root subdir
 

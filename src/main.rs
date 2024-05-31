@@ -1,4 +1,4 @@
-use std::{thread, time::Instant};
+use std::{env::args, thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -10,7 +10,12 @@ fn main() {
     let path: String = utils::get_path();
     counting::init_count();
     multithreading_handles_bangles(path.clone());
-    threads_tmps(path);
+    let args: Vec<_> = args().collect();
+    if args.len() == 2 {
+        if args[1] == "1" {
+            threads_tmps(path);
+        }
+    }
     utils::exit_msg();
 }
 
