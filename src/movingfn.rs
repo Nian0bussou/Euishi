@@ -49,19 +49,18 @@ pub fn move_stuff(dir: String) {
 }
 
 fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
-    let dwall_______________ = dests[0];
-    let dother______________ = dests[1];
-    let dsquare_____________ = dests[2];
-    let dbadqualitylandscape = dests[4];
-    let dbadqualitysquare___ = dests[5];
-    let dbadquaaityportrait_ = dests[6];
-    let dvideo______________ = dests[7];
+    let dwall = dests[0];
+    let dother = dests[1];
+    let dsquare = dests[2];
+    let dblandscape = dests[4];
+    let dbsquare = dests[5];
+    let dbportrait = dests[6];
+    let dvideo = dests[7];
 
-    //                              .u-------------------------; converts &OsStr to &str
-    let extension = file.extension().unwrap(); // .to_str().unwrap()
+    let extension = file.extension().unwrap(); // .to_str().unwrap() // optional to convert &osstr to &str
 
     if extension == "mp4" {
-        file_wrapper_rename(file, dvideo______________, "yellow", "video", source);
+        file_wrapper_rename(file, dvideo, "yellow", "video", source);
         return;
     }
     let (width, height) = image_dimensions(&file).unwrap();
@@ -70,15 +69,15 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
     //////////////////////////////////////////////////////////////////////
     let (dest, color) = if width >= 1080 && height >= 1080 {
         match aspect_ratio {
-            ar if ar > 1.0 => (dwall_______________, "red"),
-            ar if ar == 1.0 => (dsquare_____________, "blue"),
-            _ => (dother______________, "green"),
+            ar if ar > 1.0 => (dwall, "red"),
+            ar if ar == 1.0 => (dsquare, "blue"),
+            _ => (dother, "green"),
         }
     } else {
         match aspect_ratio {
-            ar if ar > 1.0 => (dbadqualitylandscape, "cyan"),
-            ar if ar == 1.0 => (dbadqualitysquare___, "magenta"),
-            _ => (dbadquaaityportrait_, "purple"),
+            ar if ar > 1.0 => (dblandscape, "cyan"),
+            ar if ar == 1.0 => (dbsquare, "magenta"),
+            _ => (dbportrait, "purple"),
         }
     };
     let label = match aspect_ratio {

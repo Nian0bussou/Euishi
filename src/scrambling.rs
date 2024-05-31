@@ -1,6 +1,5 @@
-use std::{fs, path::Path};
-
 use crate::{counting::GLOBAL_COUNTS, utils};
+use std::{fs, path::Path};
 use walkdir::WalkDir;
 
 pub fn scramble(path: String) {

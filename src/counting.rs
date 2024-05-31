@@ -1,6 +1,5 @@
 use lazy_static::lazy_static;
-use std::sync::Mutex;
-use std::u128;
+use std::{sync::Mutex, u128};
 
 pub struct Countstruct {
     process: u128,
@@ -10,6 +9,7 @@ pub struct Countstruct {
     squares: u128,
     portraits: u128,
     dir_created: u128,
+    tmp_removed: u128,
 }
 
 impl Countstruct {
@@ -22,6 +22,7 @@ impl Countstruct {
             squares: 0,
             portraits: 0,
             dir_created: 0,
+            tmp_removed: 0,
         }
     }
 
@@ -33,6 +34,9 @@ impl Countstruct {
     }
     pub fn get_dir_coutn(&self) -> u128 {
         self.dir_created
+    }
+    pub fn get_tmp_count(&self) -> u128 {
+        self.tmp_removed
     }
 
     pub fn propp(&mut self) {
@@ -56,6 +60,9 @@ impl Countstruct {
 
     pub fn dir_countpp(&mut self) {
         self.dir_created += 1;
+    }
+    pub fn tmp_removedpp(&mut self) {
+        self.tmp_removed += 1;
     }
 }
 

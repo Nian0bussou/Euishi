@@ -1,8 +1,4 @@
-use std::thread::sleep;
-use std::time::Duration;
-use std::{process::exit, thread, time::Instant};
-use utils::{exit_msg, get_path};
-
+use std::{thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -10,34 +6,55 @@ mod temps_file;
 mod utils;
 
 fn main() {
-    let _time = TimingGuard::new();
+    let _a: TimingGuard = TimingGuard::new();
+    let path: String = utils::get_path();
     counting::init_count();
-    sleep(Duration::from_millis(2000));
-    let choice = utils::get_choice();
-    let path = get_path();
-    let subs = utils::get_folders(&path);
-    utils::line();
+    multithreading_handles_bangles(path.clone());
+    threads_tmps(path);
+    utils::exit_msg();
+}
 
-    // multithreading go brrrr
+fn multithreading_handles_bangles(path: String) {
+    let subs: Vec<String> = utils::get_folders(&path);
+    let choice: bool = utils::get_choice();
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
-                0 => movingfn::move_stuff(source),
-                1 => scrambling::scramble(source),
-                _ => exit(i32::MAX),
+                false => movingfn::move_stuff(source),
+                true => scrambling::scramble(source),
             })
         })
         .collect();
-
     for handle in handles {
         handle.join().unwrap();
     }
+}
 
-    temps_file::remove_tmps(&path);
+fn threads_tmps(path: String) {
+    println!("removing tmps files");
+    let subs: Vec<String> = utils::get_folders(&path);
 
-    utils::line();
-    exit_msg();
+    let mut tmp_subs: Vec<String> = Vec::new();
+    for t in subs {
+        let s = format!("{}/", t);
+        tmp_subs.push(s)
+    }
+    let mut subsub: Vec<String> = Vec::new();
+    for sub in tmp_subs {
+        let tmp_subs = utils::get_folders(&sub);
+        for t in tmp_subs {
+            subsub.push(t);
+        }
+    }
+
+    let handles: Vec<_> = subsub
+        .into_iter()
+        .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))
+        .collect();
+    for handle in handles {
+        handle.join().unwrap();
+    }
 }
 
 struct TimingGuard {

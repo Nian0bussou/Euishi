@@ -1,10 +1,11 @@
-use std::collections::HashSet;
-use std::env::args;
-use std::env::consts::OS;
-use std::fs;
-use std::path::{Path, PathBuf};
-
-use std::u8;
+use core::panic;
+use std::{
+    collections::HashSet,
+    env::{args, consts::OS},
+    fs,
+    path::{Path, PathBuf},
+    u8,
+};
 
 use term_size::dimensions;
 
@@ -29,7 +30,10 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "square" => "■",
         "portrait" => "┃",
         "video" => "▶",
-        _ => "",
+        _ => panic!(/* mainly for debug */
+            "invalid option ; got : {} , expected : {{\"land\", \"square\", \"portrait\", \"video\"}}", 
+            dest_type 
+        ),
     };
 
     let tab = "\t";
@@ -72,23 +76,24 @@ pub fn get_path() -> String {
 }
 
 // returns choice whether to (0) sort or (1) scramble
-pub fn get_choice() -> u8 {
+// bool cuz no need for more options yet
+pub fn get_choice() -> bool {
     let args: Vec<_> = args().collect();
     if args.len() < 2 {
-        return 0;
+        return false;
     }
     match &args[1].parse::<u8>() {
         Ok(n) => match n {
-            0 => return 0,
-            1 => return 1,
+            0 => return false,
+            1 => return true,
             _ => {
                 println!("invalid option");
-                return u8::MAX;
+                std::process::exit(1984);
             }
         },
         Err(_) => {
             eprintln!("could not get choice");
-            std::process::exit(1);
+            std::process::exit(19198484);
         }
     }
 }
@@ -102,7 +107,7 @@ pub fn get_folders(directory: &str) -> Vec<String> {
                 if let Some(name) = path.file_name() {
                     if let Some(name_str) = name.to_str() {
                         if path.is_dir() {
-                            folders.insert(name_str.to_string()); // nesting hell
+                            folders.insert(name_str.to_string()); // nesting hell 🏳️‍⚧️
                         }
                     }
                 }
@@ -111,10 +116,9 @@ pub fn get_folders(directory: &str) -> Vec<String> {
     }
     let mut vecs: Vec<String> = folders.into_iter().collect();
     vecs.sort();
-    return vecs
-        .into_iter()
+    vecs.into_iter()
         .map(|folder| format!("{}{}", directory, folder))
-        .collect();
+        .collect()
 }
 
 pub fn exit_msg() {
@@ -122,6 +126,7 @@ pub fn exit_msg() {
     let (p, s, f) = guard.get_process();
     let (la, po, sq) = guard.get_images_types();
     let ds = guard.get_dir_coutn();
+    let tr = guard.get_tmp_count();
     line();
     println!("Finished,");
     println!("count     : {}", p);
@@ -134,6 +139,7 @@ pub fn exit_msg() {
     println!("squa: {}", sq);
     line();
     println!("Dir created : {}", ds);
+    println!("tmp removed : {}", tr);
     line();
 }
 
