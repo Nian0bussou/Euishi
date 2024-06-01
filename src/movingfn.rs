@@ -1,11 +1,9 @@
+use crate::{counting::GLOBAL_COUNTS, utils};
+use image::image_dimensions;
 use std::{
     fs,
     path::{Path, PathBuf},
 };
-
-use crate::counting::GLOBAL_COUNTS;
-use crate::utils;
-use image::image_dimensions;
 
 pub fn move_stuff(dir: String) {
     let dwall = Path::new(&dir).join("wall");
@@ -58,15 +56,12 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
     let dvideo = dests[7];
 
     let extension = file.extension().unwrap(); // .to_str().unwrap() // optional to convert &osstr to &str
-
     if extension == "mp4" {
         file_wrapper_rename(file, dvideo, "yellow", "video", source);
         return;
     }
     let (width, height) = image_dimensions(&file).unwrap();
     let aspect_ratio = width as f32 / height as f32;
-
-    //////////////////////////////////////////////////////////////////////
     let (dest, color) = if width >= 1080 && height >= 1080 {
         match aspect_ratio {
             ar if ar > 1.0 => (dwall, "red"),
@@ -86,7 +81,6 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
         _ => "portrait",
     };
     file_wrapper_rename(file, dest, color, label, source)
-    //////////////////////////////////////////////////////////////////////
 }
 
 fn file_wrapper_rename(

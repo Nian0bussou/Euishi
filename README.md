@@ -44,6 +44,8 @@ make sure the path is correct
 
 The program will sort the subdirectories in the path provided (in this case 'your-path')
 
+IT **WILL NOT** sort the root directory ('your-path' in this example)
+
 your-path/
 
 ├── subdir1

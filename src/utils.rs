@@ -22,6 +22,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "purple" => "\x1b[35;1m",
         "grey" => "\x1b[37m",
         "yellow" => "\x1b[33m",
+        "white"  => "\x1b[0m",
         _ => reset,
     };
 
@@ -31,7 +32,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "portrait" => "┃",
         "video" => "▶",
         _ => panic!(/* mainly for debug */
-            "invalid option ; got : {} , expected : {{\"land\", \"square\", \"portrait\", \"video\"}}", 
+            "invalid option ; got : {} , expected one of these : {{\"land\", \"square\", \"portrait\", \"video\"}}", 
             dest_type 
         ),
     };
@@ -44,8 +45,8 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     };
     let padded_dir_str = format!("{:<80}", parentdir);
     println!(
-        "{}{}{}{}{}{}{}{}{}",
-        tab, color, special, tab, padded_dir_str, "<|====|>", tab, dest_path, reset
+        "{}{}{}{}{} <|====|> {}{}{}",
+        tab, color, special, tab, padded_dir_str, tab, dest_path, reset
     )
 }
 
