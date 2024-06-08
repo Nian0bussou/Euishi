@@ -27,23 +27,34 @@ pub fn move_stuff(dir: String) {
     ];
     make_folders(&destinations);
 
-    match fs::read_dir(&dir) {
-        Ok(entries) => {
-            for f in entries {
-                match f {
-                    Ok(f) => {
-                        let path = f.path();
-                        if path.is_dir() {
-                            continue;
-                        }
-                        move_file(path, &destinations, &dir)
-                    }
-                    Err(_) => (),
+    if let Ok(entries) = fs::read_dir(&dir) {
+        for f in entries {
+            if let Ok(f) = f {
+                let path = f.path();
+                if path.is_dir() {
+                    continue;
                 }
+                move_file(path, &destinations, &dir)
             }
         }
-        Err(_) => (),
     }
+    // match fs::read_dir(&dir) {
+    //     Ok(entries) => {
+    //         for f in entries {
+    //             match f {
+    //                 Ok(f) => {
+    //                     let path = f.path();
+    //                     if path.is_dir() {
+    //                         continue;
+    //                     }
+    //                     move_file(path, &destinations, &dir)
+    //                 }
+    //                 Err(_) => (), // no need to do anything here
+    //             }
+    //         }
+    //     }
+    //     Err(_) => (), // no need to do anything here
+    // }
 }
 
 fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
@@ -55,9 +66,9 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
     let dbportrait = dests[6];
     let dvideo = dests[7];
 
-    let extension = file.extension().unwrap(); // .to_str().unwrap() // optional to convert &osstr to &str
+    let extension = file.extension().unwrap();
     if extension == "mp4" {
-        file_wrapper_rename(file, dvideo, "yellow", "video", source);
+        wrap_rename(file, dvideo, "yellow", "video", source);
         return;
     }
     let (width, height) = image_dimensions(&file).unwrap();
@@ -65,31 +76,25 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
     let (dest, color) = if width >= 1080 && height >= 1080 {
         match aspect_ratio {
             ar if ar > 1.0 => (dwall, "red"),
-            ar if ar == 1.0 => (dsquare, "blue"),
-            _ => (dother, "green"),
+            ar if ar < 1.0 => (dother, "green"),
+            _ => (dsquare, "blue"),
         }
     } else {
         match aspect_ratio {
             ar if ar > 1.0 => (dblandscape, "cyan"),
-            ar if ar == 1.0 => (dbsquare, "magenta"),
-            _ => (dbportrait, "purple"),
+            ar if ar < 1.0 => (dbportrait, "purple"),
+            _ => (dbsquare, "magenta"),
         }
     };
     let label = match aspect_ratio {
         ar if ar > 1.0 => "land",
-        ar if ar == 1.0 => "square",
-        _ => "portrait",
+        ar if ar < 1.0 => "portrait",
+        _ => "square",
     };
-    file_wrapper_rename(file, dest, color, label, source)
+    wrap_rename(file, dest, color, label, source)
 }
 
-fn file_wrapper_rename(
-    file_path: PathBuf,
-    destination: &PathBuf,
-    color: &str,
-    format: &str,
-    source: &str,
-) {
+fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &str, source: &str) {
     let mut guard = GLOBAL_COUNTS.lock().unwrap();
     match format {
         "land" => guard.landpp(),
@@ -99,16 +104,10 @@ fn file_wrapper_rename(
     };
     let file_name = file_path.file_name().unwrap();
     let new_file = destination.join(file_name);
-    file_wrapper_move(file_path, new_file, color, format, source)
+    wrap_move(file_path, new_file, color, format, source)
 }
 
-fn file_wrapper_move(
-    file_path: PathBuf,
-    new_path: PathBuf,
-    color: &str,
-    format: &str,
-    source: &str,
-) {
+fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, source: &str) {
     let tmp = new_path.parent().unwrap().to_owned();
     let parent_new = tmp.to_str().unwrap();
     let mut guard = GLOBAL_COUNTS.lock().unwrap();
@@ -128,9 +127,12 @@ fn file_wrapper_move(
 fn make_folders(dests: &Vec<&PathBuf>) {
     for d in dests {
         let mut guard = GLOBAL_COUNTS.lock().unwrap();
-        match fs::create_dir(d) {
-            Ok(_) => guard.dir_countpp(),
-            Err(_) => (),
-        };
+        if let Ok(_) = fs::create_dir(d) {
+            guard.dir_countpp()
+        }
+        // match fs::create_dir(d) {
+        //     Ok(_) => guard.dir_countpp(),
+        //     Err(_) => (),
+        // };
     }
 }

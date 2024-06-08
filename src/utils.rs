@@ -78,15 +78,15 @@ pub fn get_path() -> String {
 
 // returns choice whether to (0) sort or (1) scramble
 // bool cuz no need for more options yet
-pub fn get_choice() -> bool {
+pub fn get_choice() -> u8 {
     let args: Vec<_> = args().collect();
     if args.len() < 3 {
-        return false;
+        return 0;
     }
     match &args[2].parse::<u8>() {
         Ok(n) => match n {
-            0 => return false,
-            1 => return true,
+            0 => return 0,
+            1 => return 1,
             _ => {
                 println!("invalid option");
                 std::process::exit(1984);

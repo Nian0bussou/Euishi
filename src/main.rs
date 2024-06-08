@@ -1,4 +1,4 @@
-use std::{env::args, thread, time::Instant};
+use std::{env::args, process::exit, thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -6,10 +6,10 @@ mod temps_file;
 mod utils;
 
 fn main() {
-    let _a: TimingGuard = TimingGuard::new();
+    let _t: TimingGuard = TimingGuard::new();
     let path: String = utils::get_path();
     counting::init_count();
-    multithreading_handles_bangles(path.clone());
+    threads_brr(path.clone());
     let args: Vec<_> = args().collect();
     if args.len() == 2 {
         if args[1] == "1" {
@@ -19,15 +19,16 @@ fn main() {
     utils::exit_msg();
 }
 
-fn multithreading_handles_bangles(path: String) {
+fn threads_brr(path: String) {
     let subs: Vec<String> = utils::get_folders(&path);
-    let choice: bool = utils::get_choice();
+    let choice: u8 = utils::get_choice();
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
-                false => movingfn::move_stuff(source),
-                true => scrambling::scramble(source),
+                0 => movingfn::move_stuff(source),
+                1 => scrambling::scramble(source),
+                _ => exit(2532136),
             })
         })
         .collect();
@@ -39,7 +40,6 @@ fn multithreading_handles_bangles(path: String) {
 fn threads_tmps(path: String) {
     println!("removing tmps files");
     let subs: Vec<String> = utils::get_folders(&path);
-
     let mut tmp_subs: Vec<String> = Vec::new();
     for t in subs {
         let s = format!("{}/", t);
@@ -52,7 +52,6 @@ fn threads_tmps(path: String) {
             subsub.push(t);
         }
     }
-
     let handles: Vec<_> = subsub
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))
