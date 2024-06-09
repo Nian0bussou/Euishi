@@ -70,6 +70,6 @@ lazy_static! {
     pub static ref GLOBAL_COUNTS: Mutex<Countstruct> = Mutex::new(Countstruct::new());
 }
 
-pub fn init_count() {
-    let _ = GLOBAL_COUNTS;
-}
+// pub fn init_count() {
+//     let _ = GLOBAL_COUNTS;
+// }
