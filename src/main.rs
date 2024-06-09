@@ -14,7 +14,7 @@ mod utils;
 fn main() {
     let _t: TimingGuard = TimingGuard::new();
     let path: String = utils::get_path();
-    // counting::init_count();
+    counting::init_count();
     threads_brr(path.clone());
     let args: Vec<_> = args().collect();
     if args.len() == 2 {

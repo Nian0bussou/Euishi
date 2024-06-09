@@ -39,11 +39,12 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
 
     let tab = "\t";
     let path = Path::new(&source);
-    let parentdir = match path.parent() {
-        Some(s) => s.display().to_string(),
-        None => "".to_string(),
-    };
-    let padded_dir_str = format!("{:<80}", parentdir);
+    // let parentdir = match path.parent() {
+    //     Some(s) => s.display().to_string(),
+    //     None => "".to_string(),
+    // };
+    let padded_dir_str = format!("{:<30}", path.display());
+    // let padded_dir_str = format!("{:<30}", parentdir);
     println!(
         "{}{}{}{}{} <|====|> {}{}{}",
         tab, color, special, tab, padded_dir_str, tab, dest_path, reset
@@ -125,7 +126,7 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 pub fn exit_msg() {
     let guard = GLOBAL_COUNTS.lock().unwrap();
     let (p, s, f) = guard.get_process();
-    let (la, po, sq) = guard.get_images_types();
+    let (la, po, sq, vi) = guard.get_images_types();
     let ds = guard.get_dir_coutn();
     let tr = guard.get_tmp_count();
     line();
@@ -135,9 +136,10 @@ pub fn exit_msg() {
     println!("failed    : {}", f);
     line();
     println!("types;");
-    println!("land: {}", la);
-    println!("port: {}", po);
-    println!("squa: {}", sq);
+    println!("landscape: {}", la);
+    println!("portrait : {}", po);
+    println!("square   : {}", sq);
+    println!("video    : {}", vi);
     line();
     println!("Dir created : {}", ds);
     println!("tmp removed : {}", tr);

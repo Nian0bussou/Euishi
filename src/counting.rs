@@ -8,6 +8,7 @@ pub struct Countstruct {
     landscapes: u128,
     squares: u128,
     portraits: u128,
+    video: u128,
     dir_created: u128,
     tmp_removed: u128,
 }
@@ -21,6 +22,7 @@ impl Countstruct {
             landscapes: 0,
             squares: 0,
             portraits: 0,
+            video: 0,
             dir_created: 0,
             tmp_removed: 0,
         }
@@ -29,8 +31,8 @@ impl Countstruct {
     pub fn get_process(&self) -> (u128, u128, u128) {
         (self.process, self.succeed, self.failed)
     }
-    pub fn get_images_types(&self) -> (u128, u128, u128) {
-        (self.landscapes, self.portraits, self.squares)
+    pub fn get_images_types(&self) -> (u128, u128, u128, u128) {
+        (self.landscapes, self.portraits, self.squares, self.video)
     }
     pub fn get_dir_coutn(&self) -> u128 {
         self.dir_created
@@ -57,6 +59,9 @@ impl Countstruct {
     pub fn squapp(&mut self) {
         self.squares += 1;
     }
+    pub fn videpp(&mut self) {
+        self.video += 1;
+    }
 
     pub fn dir_countpp(&mut self) {
         self.dir_created += 1;
@@ -70,6 +75,6 @@ lazy_static! {
     pub static ref GLOBAL_COUNTS: Mutex<Countstruct> = Mutex::new(Countstruct::new());
 }
 
-// pub fn init_count() {
-//     let _ = GLOBAL_COUNTS;
-// }
+pub fn init_count() {
+    let _ = GLOBAL_COUNTS;
+}
