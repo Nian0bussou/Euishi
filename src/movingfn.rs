@@ -103,15 +103,19 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
     let parent_new = tmp.to_str().unwrap();
 
     // // the commented code hangs the thread
+    let mut guard = match GLOBAL_COUNTS.lock() {
+        Ok(g) => g,
+        Err(_) => panic!("couldn't lock guard"),
+    };
     // let mut guard = GLOBAL_COUNTS.lock().unwrap();
-    // guard.propp();
+    guard.propp();
     match fs::rename(file_path, new_path) {
         Ok(_) => {
-            // guard.sucpp();
+            guard.sucpp();
             utils::file_output(source, parent_new, color, format)
         }
         Err(_) => {
-            // guard.faipp();
+            guard.faipp();
             utils::error_maxxing();
         }
     }
@@ -122,10 +126,6 @@ fn make_folders(dests: &Vec<&PathBuf>) {
         let mut guard = GLOBAL_COUNTS.lock().unwrap();
         if let Ok(_) = fs::create_dir(d) {
             guard.dir_countpp()
-        }
-        // match fs::create_dir(d) {
-        //     Ok(_) => guard.dir_countpp(),
-        //     Err(_) => (),
-        // };
+        };
     }
 }

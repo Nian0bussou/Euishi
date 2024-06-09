@@ -1,4 +1,5 @@
-use std::{env::args, process::exit, thread, time::Instant};
+#![allow(non_snake_case)]
+use std::{thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -13,28 +14,25 @@ mod utils;
 
 fn main() {
     let _t: TimingGuard = TimingGuard::new();
-    let path: String = utils::get_path();
+    let (moveOrScramble, doRemoveTmps, havePath) = utils::get_choices();
+    let path: String = utils::get_path(havePath);
     counting::init_count();
-    threads_brr(path.clone());
-    let args: Vec<_> = args().collect();
-    if args.len() == 2 {
-        if args[1] == "1" {
-            threads_tmps(path);
-        }
+    threads_brr(path.clone(), moveOrScramble);
+
+    if doRemoveTmps {
+        threads_tmps(path);
     }
     utils::exit_msg();
 }
 
-fn threads_brr(path: String) {
+fn threads_brr(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
-    let choice: u8 = utils::get_choice();
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
-                0 => movingfn::move_stuff(source),
-                1 => scrambling::scramble(source),
-                _ => exit(0),
+                true => movingfn::move_stuff(source),
+                false => scrambling::scramble(source),
             })
         })
         .collect();

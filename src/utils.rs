@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 use core::panic;
 use std::{
     collections::HashSet,
@@ -22,7 +23,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "purple" => "\x1b[35;1m",
         "grey" => "\x1b[37m",
         "yellow" => "\x1b[33m",
-        "white"  => "\x1b[0m",
+        "white" => "\x1b[0m",
         _ => reset,
     };
 
@@ -32,8 +33,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "portrait" => "┃",
         "video" => "▶",
         _ => panic!(/* mainly for debug */
-            "invalid option ; got : {} , expected one of these : {{\"land\", \"square\", \"portrait\", \"video\"}}", 
-            dest_type 
+            "invalid option ; expected one of these : {{\"land\", \"square\", \"portrait\", \"video\"}}"
         ),
     };
 
@@ -62,14 +62,18 @@ pub fn line() {
     println!("{}", "_".repeat(w));
 }
 
-pub fn get_path() -> String {
+pub fn get_path(hasPath: bool) -> String {
     let path: String;
     let args: Vec<_> = args().collect();
-    match OS {
-        _ if args.len() == 4 => path = args[3].clone(),
-        "windows" => path = "D:/grapper/".to_owned(),
-        "linux" => path = "/mnt/d/grapper/".to_owned(),
-        _ => panic!("cant get path"),
+    if hasPath {
+        path = args[3].clone();
+    } else {
+        match OS {
+            // default path
+            "windows" => path = "D:/grapper/".to_owned(),
+            "linux" => path = "/mnt/d/grapper/".to_owned(),
+            _ => panic!("cant get path"),
+        }
     }
     if !(Path::new(&path).exists()) {
         panic!("directory not found");
@@ -77,27 +81,52 @@ pub fn get_path() -> String {
     path
 }
 
-// returns choice whether to (0) sort or (1) scramble
-// bool cuz no need for more options yet
-pub fn get_choice() -> u8 {
-    let args: Vec<_> = args().collect();
-    if args.len() < 3 {
-        return 0;
-    }
-    match &args[2].parse::<u8>() {
-        Ok(n) => match n {
-            0 => return 0,
-            1 => return 1,
-            _ => {
-                println!("invalid option");
-                std::process::exit(1984);
+pub fn get_choices() -> (bool, bool, bool) {
+    let move_scramble: bool; // true -> move ; false -> scramble
+    let doRemoveTmps: bool; // true -> call removeTmps ; false -> dont call fn
+    let haveCustomPath: bool; // true -> has a path ; false -> yse default path
+
+    let va: Vec<_> = args().collect();
+    let lva = va.len();
+
+    if lva >= 2 {
+        move_scramble = if let Ok(n) = va[1].parse::<u8>() {
+            if n == 1 {
+                false
+            } else {
+                true
             }
-        },
-        Err(_) => {
-            eprintln!("could not get choice");
-            std::process::exit(19198484);
+        } else {
+            panic!("cant get choices ; if len >= 2")
+        };
+
+        if lva >= 3 {
+            doRemoveTmps = if let Ok(n) = va[2].parse::<u8>() {
+                if n == 1 {
+                    false
+                } else {
+                    true
+                }
+            } else {
+                panic!("cant get choices ; if len >= 3")
+            };
+
+            if lva >= 4 {
+                haveCustomPath = true;
+            } else {
+                haveCustomPath = false;
+            }
+        } else {
+            doRemoveTmps = false;
+            haveCustomPath = false;
         }
+    } else {
+        move_scramble = true;
+        doRemoveTmps = false;
+        haveCustomPath = false;
     }
+
+    (move_scramble, doRemoveTmps, haveCustomPath)
 }
 
 pub fn get_folders(directory: &str) -> Vec<String> {
