@@ -34,7 +34,7 @@ fn threads_brr(path: String) {
             thread::spawn(move || match choice {
                 0 => movingfn::move_stuff(source),
                 1 => scrambling::scramble(source),
-                _ => exit(2532136),
+                _ => exit(0),
             })
         })
         .collect();
