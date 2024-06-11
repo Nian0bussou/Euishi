@@ -9,6 +9,7 @@ use std::{
 };
 
 /// # creates the necessary directory :
+/// ```rust
 /// let dwall = Path::new(&dir).join("wall");
 /// let dother = Path::new(&dir).join("other");
 /// let dsquare = Path::new(&dir).join("square");
@@ -27,8 +28,7 @@ use std::{
 ///     &dbadqualitysquare,
 ///     &dbadqualityportrait,
 ///     &dvideo,
-/// ];
-///
+/// ```
 /// # then it invoke [`move_file`]
 pub fn move_stuff(dir: String) {
     let dwall = Path::new(&dir).join("wall");
