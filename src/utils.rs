@@ -11,6 +11,11 @@ use term_size::dimensions;
 
 use crate::counting::GLOBAL_COUNTS;
 
+/// # outputs info of file
+/// color can be : "red", "blue", "green", "cyan", "magenta", "purple"m", "grey", "yellow", "white,
+///
+/// dest_type can be : "land", "square", "portrait", "video",
+///
 pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
     let color = match color_name {
@@ -23,27 +28,18 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "grey" => "\x1b[37m",
         "yellow" => "\x1b[33m",
         "white" => "\x1b[0m",
-        _ => reset,
+        _ => panic!("invalid option ; got {}", color_name),
     };
-
     let special = match dest_type {
         "land" => "━",
         "square" => "■",
         "portrait" => "┃",
         "video" => "▶",
-        _ => panic!(/* mainly for debug */
-            "invalid option ; expected one of these : {{\"land\", \"square\", \"portrait\", \"video\"}}"
-        ),
+        _ => panic!("invalid option ; got {}", dest_type),
     };
-
     let tab = "\t";
     let path = Path::new(&source);
-    // let parentdir = match path.parent() {
-    //     Some(s) => s.display().to_string(),
-    //     None => "".to_string(),
-    // };
-    let padded_dir_str = format!("{:<30}", path.display());
-    // let padded_dir_str = format!("{:<30}", parentdir);
+    let padded_dir_str = format!("{:<40}", path.display());
     println!(
         "{}{}{}{}{} <|====|> {}{}{}",
         tab, color, special, tab, padded_dir_str, " ", dest_path, reset
