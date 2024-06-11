@@ -81,10 +81,19 @@ pub fn get_path(hasPath: bool) -> String {
     path
 }
 
-pub fn get_choices() -> (bool, bool, bool) {
-    let move_scramble: bool; // true -> move ; false -> scramble
-    let doRemoveTmps: bool; // true -> call removeTmps ; false -> dont call fn
-    let haveCustomPath: bool; // true -> has a path ; false -> yse default path
+pub struct Choices {
+    pub move_scramble: bool,  // true -> move ; false -> scramble
+    pub doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
+    pub haveCustomPath: bool, // true -> has a path ; false -> yse default path
+}
+
+pub fn get_choices() -> Choices {
+    let move_scramble: bool;
+    //                        true -> move            ;  false -> scramble
+    let doRemoveTmps: bool;
+    //                        true -> call removeTmps ;  false -> dont call fn
+    let haveCustomPath: bool;
+    //                        true -> has a path      ;  false -> yse default path
 
     let va: Vec<_> = args().collect();
     let lva = va.len();
@@ -126,7 +135,11 @@ pub fn get_choices() -> (bool, bool, bool) {
         haveCustomPath = false;
     }
 
-    (move_scramble, doRemoveTmps, haveCustomPath)
+    Choices {
+        move_scramble,
+        doRemoveTmps,
+        haveCustomPath,
+    }
 }
 
 pub fn get_folders(directory: &str) -> Vec<String> {
@@ -154,25 +167,26 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 
 pub fn exit_msg() {
     let guard = GLOBAL_COUNTS.lock().unwrap();
-    let (p, s, f) = guard.get_process();
+    let (pr, su, fa) = guard.get_process();
     let (la, po, sq, vi) = guard.get_images_types();
     let ds = guard.get_dir_coutn();
     let tr = guard.get_tmp_count();
     line();
-    println!("Finished,");
-    println!("count     : {}", p);
-    println!("succeeded : {}", s);
-    println!("failed    : {}", f);
-    line();
-    println!("types;");
-    println!("landscape: {}", la);
-    println!("portrait : {}", po);
-    println!("square   : {}", sq);
-    println!("video    : {}", vi);
-    line();
-    println!("Dir created : {}", ds);
-    println!("tmp removed : {}", tr);
-    line();
+
+    println!(
+        "Finished    ; {}   \n\
+         count       : {}   \n\
+         succeeded   : {}   \n\
+         faileds     : {}   \n\
+         types       ; {}   \n\
+         landscape   : {}   \n\
+         portrait    : {}   \n\
+         square      : {}   \n\
+         video       : {}   \n\
+         Dir created : {}   \n\
+         tmp removed : {}   ",
+        "", pr, su, fa, "", la, po, sq, vi, ds, tr
+    );
 }
 
 pub fn scramble_log(okerr: bool, f: PathBuf) {

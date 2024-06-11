@@ -62,7 +62,6 @@ impl Countstruct {
     pub fn videpp(&mut self) {
         self.video += 1;
     }
-
     pub fn dir_countpp(&mut self) {
         self.dir_created += 1;
     }

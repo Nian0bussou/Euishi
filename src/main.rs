@@ -13,19 +13,19 @@ mod utils;
 ////////////////////////////////////////////////
 
 fn main() {
-    let _t: TimingGuard = TimingGuard::new();
-    let (moveOrScramble, doRemoveTmps, havePath) = utils::get_choices();
-    let path: String = utils::get_path(havePath);
+    let _t = TimingGuard::new();
+    let choices = utils::get_choices();
+    let path: String = utils::get_path(choices.haveCustomPath);
     counting::init_count();
-    threads_brr(path.clone(), moveOrScramble);
+    threads_sorting(path.clone(), choices.move_scramble);
 
-    if doRemoveTmps {
+    if choices.doRemoveTmps {
         threads_tmps(path);
     }
     utils::exit_msg();
 }
 
-fn threads_brr(path: String, choice: bool) {
+fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
     let handles: Vec<_> = subs
         .into_iter()
