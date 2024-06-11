@@ -29,10 +29,6 @@ fn main() {
 ///
 /// either : movingfn::move_stuff(source),
 /// or     : scrambling::scramble(source)
-///
-/// # Panics
-///
-/// Panics if . // TODO: FIXME
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
 
@@ -56,9 +52,6 @@ fn threads_sorting(path: String, choice: bool) {
 
 /// go through every directory and each subdirectory recursively
 /// to remove .tmp files
-///
-/// avoid using if another program is handling (download, editing a document, etc.) in one of the
-/// subdirectory
 ///
 /// # Panics
 ///
