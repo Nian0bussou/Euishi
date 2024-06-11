@@ -17,7 +17,7 @@ use std::{
 /// let dbadqualitysquare = Path::new(&dbadquality).join("s");
 /// let dbadqualityportrait = Path::new(&dbadquality).join("p");
 /// let dvideo = Path::new(&dir).join("video");
-
+///
 /// let destinations: Vec<&PathBuf> = vec![
 ///     &dwall,
 ///     &dother,
