@@ -39,6 +39,7 @@ pub fn move_stuff(dir: String) {
     let dbadqualitysquare = Path::new(&dbadquality).join("s");
     let dbadqualityportrait = Path::new(&dbadquality).join("p");
     let dvideo = Path::new(&dir).join("video");
+    let derrors = Path::new(&dir).join("errors");
 
     let destinations: Vec<&PathBuf> = vec![
         &dwall,
@@ -49,6 +50,7 @@ pub fn move_stuff(dir: String) {
         &dbadqualitysquare,
         &dbadqualityportrait,
         &dvideo,
+        &derrors,
     ];
     make_folders(&destinations);
 
@@ -88,13 +90,17 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
     let dbsquare = dests[5];
     let dbportrait = dests[6];
     let dvideo = dests[7];
+    let derrors = dests[8];
 
     let extension = file.extension().unwrap();
     if extension == "mp4" {
         wrap_rename(file, dvideo, "yellow", "video", source);
         return;
     }
-    let (width, height) = image_dimensions(&file).unwrap();
+    let (width, height) = match image_dimensions(&file) {
+        Ok(val) => val,
+        Err(_) => (1, 1),
+    };
     let aspect_ratio = width as f32 / height as f32;
 
     if width >= 1080 && height >= 1080 {
@@ -105,7 +111,7 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
         } else if aspect_ratio == 1.0 {
             wrap_rename(file, dsquare, "blue", "square", source)
         }
-    } else {
+    } else if width != 1 && height != 1 {
         if aspect_ratio > 1.0 {
             wrap_rename(file, dblandscape, "cyan", "land", source);
         } else if aspect_ratio < 1.0 {
@@ -113,6 +119,9 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
         } else if aspect_ratio == 1.0 {
             wrap_rename(file, dbsquare, "magenta", "square", source)
         }
+    } else {
+        /* always? width == 1 && height == 1 */
+        wrap_rename(file, derrors, "red", "error", source)
     }
 }
 
@@ -143,6 +152,7 @@ fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &
             "portrait" => guard.fieldPP("port"),
             "square" => guard.fieldPP("squa"),
             "video" => guard.fieldPP("vide"),
+            "error" => (),
             _ => panic!("invalid entry match format"),
         };
     }

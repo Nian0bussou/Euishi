@@ -46,7 +46,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     // let padded_dir_str = format!("{:<30}", parentdir);
     println!(
         "{}{}{}{}{} <|====|> {}{}{}",
-        tab, color, special, tab, padded_dir_str, tab, dest_path, reset
+        tab, color, special, tab, padded_dir_str, " ", dest_path, reset
     )
 }
 

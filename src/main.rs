@@ -1,5 +1,4 @@
 #![allow(non_snake_case)]
-use core::panic;
 use std::{thread, time::Instant};
 mod counting;
 mod movingfn;
