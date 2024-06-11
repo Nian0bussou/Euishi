@@ -1,4 +1,7 @@
-use crate::{counting::GLOBAL_COUNTS, utils};
+use crate::{
+    counting::GLOBAL_COUNTS,
+    utils::{self, errorPrint},
+};
 use image::image_dimensions;
 use std::{
     fs,
@@ -38,11 +41,11 @@ pub fn move_stuff(dir: String) {
                         }
                         move_file(path, &destinations, &dir)
                     }
-                    Err(_) => (), // no need to do anything here
+                    Err(err) => errorPrint(err.to_string()),
                 }
             }
         }
-        Err(_) => (), // no need to do anything here
+        Err(err) => errorPrint(err.to_string()),
     }
 }
 
@@ -86,10 +89,10 @@ fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &
     {
         let mut guard = GLOBAL_COUNTS.lock().unwrap();
         match format {
-            "land" => guard.landpp(),
-            "portrait" => guard.portpp(),
-            "square" => guard.squapp(),
-            "video" => guard.videpp(),
+            "land" => guard.fieldPP("land"),
+            "portrait" => guard.fieldPP("port"),
+            "square" => guard.fieldPP("squa"),
+            "video" => guard.fieldPP("vide"),
             _ => panic!("invalid entry match format"),
         };
     }
@@ -108,15 +111,15 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
         Err(_) => panic!("couldn't lock guard"),
     };
     // let mut guard = GLOBAL_COUNTS.lock().unwrap();
-    guard.propp();
+    guard.fieldPP("proc");
     match fs::rename(file_path, new_path) {
         Ok(_) => {
-            guard.sucpp();
+            guard.fieldPP("succ");
             utils::file_output(source, parent_new, color, format)
         }
-        Err(_) => {
-            guard.faipp();
-            utils::error_maxxing();
+        Err(err) => {
+            guard.fieldPP("fail");
+            utils::errorPrint(err.to_string());
         }
     }
 }
@@ -125,7 +128,7 @@ fn make_folders(dests: &Vec<&PathBuf>) {
     for d in dests {
         let mut guard = GLOBAL_COUNTS.lock().unwrap();
         if let Ok(_) = fs::create_dir(d) {
-            guard.dir_countpp()
+            guard.fieldPP("dir_")
         };
     }
 }

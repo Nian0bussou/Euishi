@@ -7,7 +7,6 @@ use std::{
     path::{Path, PathBuf},
     u8,
 };
-
 use term_size::dimensions;
 
 use crate::counting::GLOBAL_COUNTS;
@@ -51,9 +50,9 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     )
 }
 
-pub fn error_maxxing() {
+pub fn errorPrint(msg: String) {
     line();
-    println!("\x1b[31mERROR\x1b[0m");
+    println!("\x1b[31mERROR\x1b[0m : {}", msg);
     line();
 }
 
@@ -167,25 +166,45 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 
 pub fn exit_msg() {
     let guard = GLOBAL_COUNTS.lock().unwrap();
-    let (pr, su, fa) = guard.get_process();
-    let (la, po, sq, vi) = guard.get_images_types();
-    let ds = guard.get_dir_coutn();
-    let tr = guard.get_tmp_count();
+    let (pr, su, fa, la, po, sq, vi, ds, tr) = guard.get_process();
     line();
 
+    // a '\' at the end skips the newline
+
     println!(
-        "Finished    ; {}   \n\
-         count       : {}   \n\
-         succeeded   : {}   \n\
-         faileds     : {}   \n\
-         types       ; {}   \n\
-         landscape   : {}   \n\
-         portrait    : {}   \n\
-         square      : {}   \n\
-         video       : {}   \n\
-         Dir created : {}   \n\
-         tmp removed : {}   ",
-        "", pr, su, fa, "", la, po, sq, vi, ds, tr
+        "_____________         \n\
+         |Finished   |         \n\
+         |-----------|         \n\
+                               \n\
+         \t count       : {}   \n\
+         \t succeeded   : {}   \n\
+         \t faileds     : {}   \n\
+         _____________         \n\
+         |Types      |         \n\
+         |-----------|         \n\
+                               \n\
+         \t landscape   : {}   \n\
+         \t portrait    : {}   \n\
+         \t square      : {}   \n\
+         \t video       : {}   \n\
+         _____________         \n\
+         |Directory  |         \n\
+         |-----------|         \n\
+                               \n\
+         \t Dir created : {}   \n\
+         \t tmp removed : {}   ",
+        // Finished
+        pr,
+        su,
+        fa,
+        // types
+        la,
+        po,
+        sq,
+        vi,
+        // Directory
+        ds,
+        tr,
     );
 }
 

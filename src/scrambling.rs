@@ -18,15 +18,15 @@ pub fn scramble(path: String) {
             };
             let new_path = path.join(filename);
             let mut guard = GLOBAL_COUNTS.lock().unwrap();
-            guard.propp();
+            guard.fieldPP("proc");
             match fs::rename(p, &new_path) {
                 Ok(_) => {
-                    guard.sucpp();
+                    guard.fieldPP("succ");
                     utils::scramble_log(true, new_path);
                 }
                 Err(_) => {
                     let mut guard = GLOBAL_COUNTS.lock().unwrap();
-                    guard.faipp();
+                    guard.fieldPP("fail");
                     utils::scramble_log(false, new_path);
                 }
             }

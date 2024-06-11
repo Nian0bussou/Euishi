@@ -27,6 +27,7 @@ fn main() {
 
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
+
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {
@@ -36,6 +37,7 @@ fn threads_sorting(path: String, choice: bool) {
             })
         })
         .collect();
+    // wait for all threads to finish
     for handle in handles {
         handle.join().unwrap();
     }
@@ -44,6 +46,7 @@ fn threads_sorting(path: String, choice: bool) {
 fn threads_tmps(path: String) {
     println!("removing tmps files");
     let subs: Vec<String> = utils::get_folders(&path);
+    //
     let mut tmp_subs: Vec<String> = Vec::new();
     for t in subs {
         let s = format!("{}/", t);
@@ -56,6 +59,7 @@ fn threads_tmps(path: String) {
             subsub.push(t);
         }
     }
+    //
     let handles: Vec<_> = subsub
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))

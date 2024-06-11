@@ -1,3 +1,4 @@
+use core::panic;
 use lazy_static::lazy_static;
 use std::{sync::Mutex, u128};
 
@@ -14,8 +15,8 @@ pub struct Countstruct {
 }
 
 impl Countstruct {
-    pub fn new() -> Countstruct {
-        Countstruct {
+    pub fn new() -> Self {
+        Self {
             process: 0,
             succeed: 0,
             failed: 0,
@@ -28,45 +29,40 @@ impl Countstruct {
         }
     }
 
-    pub fn get_process(&self) -> (u128, u128, u128) {
-        (self.process, self.succeed, self.failed)
-    }
-    pub fn get_images_types(&self) -> (u128, u128, u128, u128) {
-        (self.landscapes, self.portraits, self.squares, self.video)
-    }
-    pub fn get_dir_coutn(&self) -> u128 {
-        self.dir_created
-    }
-    pub fn get_tmp_count(&self) -> u128 {
-        self.tmp_removed
+    /// Returns the get process of this [Countstruct]:
+    /// { process, succeed, failed, landscapes, squares, portraits, video, dir_created, tmp_removed }
+    pub fn get_process(&self) -> (u128, u128, u128, u128, u128, u128, u128, u128, u128) {
+        (
+            self.process,
+            self.succeed,
+            self.failed,
+            self.landscapes,
+            self.squares,
+            self.portraits,
+            self.video,
+            self.dir_created,
+            self.tmp_removed,
+        )
     }
 
-    pub fn propp(&mut self) {
-        self.process += 1;
-    }
-    pub fn sucpp(&mut self) {
-        self.succeed += 1;
-    }
-    pub fn faipp(&mut self) {
-        self.failed += 1;
-    }
-    pub fn landpp(&mut self) {
-        self.landscapes += 1;
-    }
-    pub fn portpp(&mut self) {
-        self.portraits += 1;
-    }
-    pub fn squapp(&mut self) {
-        self.squares += 1;
-    }
-    pub fn videpp(&mut self) {
-        self.video += 1;
-    }
-    pub fn dir_countpp(&mut self) {
-        self.dir_created += 1;
-    }
-    pub fn tmp_removedpp(&mut self) {
-        self.tmp_removed += 1;
+    /// # increase by 1 a field in [Countstruct].
+    /// select which one by providing one of the following [`&str`]
+    /// "proc", "succ", "fail", "land", "port", "squa", "vide", "dir_", "tmp_",
+    /// # Panics
+    /// Panics if the provided [`&str`].
+    pub fn fieldPP(&mut self, field: &str) {
+        match field {
+            "proc" => self.process += 1,
+            "succ" => self.succeed += 1,
+            "fail" => self.failed += 1,
+            "land" => self.landscapes += 1,
+            "port" => self.portraits += 1,
+            "squa" => self.squares += 1,
+            "vide" => self.video += 1,
+            "dir_" => self.dir_created += 1,
+            "tmp_" => self.tmp_removed += 1,
+            _ => panic!("invalid field"),
+        }
     }
 }
 
