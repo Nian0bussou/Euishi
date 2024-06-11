@@ -14,7 +14,7 @@ use crate::counting::GLOBAL_COUNTS;
 /// # outputs info of file
 /// color can be : "red", "blue", "green", "cyan", "magenta", "purple"m", "grey", "yellow", "white,
 ///
-/// dest_type can be : "land", "square", "portrait", "video",
+/// dest_type can be : "land", "square", "portrait", "video", "error"
 ///
 pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
@@ -189,7 +189,8 @@ pub fn exit_msg() {
          |-----------|       \n\
                              \n\
          \t Dir created : {} \n\
-         \t tmp removed : {} ",
+         \t tmp removed : {} \
+         ",
         // Finished
         pr,
         su,

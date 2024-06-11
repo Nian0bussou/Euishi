@@ -29,7 +29,7 @@ use std::{
 ///     &dvideo,
 /// ];
 ///
-/// # then invoke [`move_file`]
+/// # then it invoke [`move_file`]
 pub fn move_stuff(dir: String) {
     let dwall = Path::new(&dir).join("wall");
     let dother = Path::new(&dir).join("other");

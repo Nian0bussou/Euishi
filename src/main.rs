@@ -6,11 +6,11 @@ mod scrambling;
 mod temps_file;
 mod utils;
 
-////////////////////////////////////////////////
-//                                            //
-//  I WILL POST CRINGE IN #GENERAL, MACHINE   //
-//                                            //
-////////////////////////////////////////////////
+//////////////////////////////////////
+//                                  //
+//  I WILL POST CRINGE IN #GENERAL  //
+//                                  //
+//////////////////////////////////////
 
 fn main() {
     let _t = TimingGuard::new();
