@@ -31,9 +31,6 @@ fn main() {
 /// or     : scrambling::scramble(source)
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
-
-    println!("got into threads_sorting");
-
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {

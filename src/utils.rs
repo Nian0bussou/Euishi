@@ -35,6 +35,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "square" => "■",
         "portrait" => "┃",
         "video" => "▶",
+        "error" => "❌",
         _ => panic!("invalid option ; got {}", dest_type),
     };
     let tab = "\t";
