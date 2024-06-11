@@ -13,7 +13,7 @@ pub fn remove_tmps(path: &str) {
         };
         if path.is_file() && path.extension().unwrap() == "tmp" {
             let mut guard = GLOBAL_COUNTS.lock().unwrap();
-            guard.tmp_removedpp();
+            guard.fieldPP("tmp_");
             let _ = fs::remove_file(path);
         }
     }

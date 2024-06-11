@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+use core::panic;
 use std::{thread, time::Instant};
 mod counting;
 mod movingfn;
@@ -36,12 +37,15 @@ fn main() {
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
 
+    println!("got into threads_sorting");
+
     let handles: Vec<_> = subs
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
                 true => movingfn::move_stuff(source),
-                false => scrambling::scramble(source),
+                // false => panic!("false in hoice"),
+                false => scrambling::scramble(source), // FIXME
             })
         })
         .collect();
