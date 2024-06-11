@@ -1,8 +1,5 @@
 #![allow(non_snake_case)]
-use std::{
-    thread::{self, JoinHandle},
-    time::Instant,
-};
+use std::{ptr::null, thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
