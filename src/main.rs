@@ -1,5 +1,8 @@
 #![allow(non_snake_case)]
-use std::{thread, time::Instant};
+use std::{
+    thread::{self, JoinHandle},
+    time::Instant,
+};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -58,6 +61,8 @@ fn threads_tmps(path: String) {
     let subs: Vec<String> = utils::get_folders(&path);
     //
     let mut tmp_subs: Vec<String> = Vec::new();
+    // format string to have '/' at the end to have a valid path because im using String instead of
+    // Path like an idiot
     for t in subs {
         let s = format!("{}/", t);
         tmp_subs.push(s)

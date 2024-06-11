@@ -198,7 +198,7 @@ fn make_folders(dests: &Vec<&PathBuf>) {
     for d in dests {
         let mut guard = GLOBAL_COUNTS.lock().unwrap();
         match fs::create_dir(d) {
-            Ok(_) => guard.fieldPP("dir_"),
+            Ok(_) => guard.fieldPP("dir"),
             _ => (),
         };
     }

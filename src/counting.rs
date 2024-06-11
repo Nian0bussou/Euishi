@@ -60,7 +60,7 @@ impl Countstruct {
 
     /// # increase by 1 a field in [Countstruct].
     /// select which one by providing one of the following [`&str`]
-    /// "proc", "succ", "fail", "land", "port", "squa", "vide", "dir_", "tmp_",
+    /// "proc", "succ", "fail", "land", "port", "squa", "vide", "dir", "tmp",
     /// # Panics
     /// Panics if the provided [`&str`].
     pub fn fieldPP(&mut self, field: &str) {
@@ -72,8 +72,8 @@ impl Countstruct {
             "port" => self.portraits += 1,
             "squa" => self.squares += 1,
             "vide" => self.video += 1,
-            "dir_" => self.dir_created += 1,
-            "tmp_" => self.tmp_removed += 1,
+            "dir" => self.dir_created += 1,
+            "tmp" => self.tmp_removed += 1,
             _ => panic!("invalid field"),
         }
     }

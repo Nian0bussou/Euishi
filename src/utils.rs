@@ -1,5 +1,4 @@
 #![allow(non_snake_case)]
-use core::panic;
 use std::{
     collections::HashSet,
     env::{args, consts::OS},
@@ -47,9 +46,12 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     )
 }
 
-pub fn errorPrint(msg: String) {
+/// print an error message alongside the error
+pub fn errorPrint(err: String) {
     line();
-    println!("\x1b[31mERROR\x1b[0m : {}", msg);
+    let red = "\x1b[31m";
+    let white = "\x1b[0m";
+    println!("{}ERROR{}: {}", red, err, white);
     line();
 }
 
@@ -167,29 +169,32 @@ pub fn exit_msg() {
     line();
 
     // a '\' at the end skips the newline
+    //
+    //
+    //
 
     println!(
-        "_____________            \n\
-         |Finished   |            \n\
-         |-----------|            \n\
-                                  \n\
-         \x1b\\  count       : {} \n\
-         \x1b\\  succeeded   : {} \n\
-         \x1b\\  faileds     : {} \n\
-         _____________            \n\
-         |Types      |            \n\
-         |-----------|            \n\
-                                  \n\
-         \x1b\\  landscape   : {} \n\
-         \x1b\\  portrait    : {} \n\
-         \x1b\\  square      : {} \n\
-         \x1b\\  video       : {} \n\
-         _____________            \n\
-         |Directory  |            \n\
-         |-----------|            \n\
-                                  \n\
-         \x1b\\  Dir created : {} \n\
-         \x1b\\  tmp removed : {} \n",
+        "_____________       \n\
+         |Finished   |       \n\
+         |-----------|       \n\
+                             \n\
+    \x1b\\  count       : {} \n\
+    \x1b\\  succeeded   : {} \n\
+    \x1b\\  faileds     : {} \n\
+         _____________       \n\
+         |Types      |       \n\
+         |-----------|       \n\
+                             \n\
+    \x1b\\  landscape   : {} \n\
+    \x1b\\  portrait    : {} \n\
+    \x1b\\  square      : {} \n\
+    \x1b\\  video       : {} \n\
+         _____________       \n\
+         |Directory  |       \n\
+         |-----------|       \n\
+                             \n\
+    \x1b\\  Dir created : {} \n\
+    \x1b\\  tmp removed : {} \n",
         // Finished
         pr,
         su,
@@ -207,8 +212,10 @@ pub fn exit_msg() {
 
 pub fn scramble_log(okerr: bool, f: PathBuf) {
     let f = f.display().to_string();
+    let truemsg = format!("        moved : {}", f);
+    let falsems = format!("dit not moved : {}", f);
     match okerr {
-        true => println!("       moved : {}", f),
-        false => println!("dit not move : {}", f),
+        true => println!("{}", truemsg),
+        false => println!("{}", falsems),
     }
 }
