@@ -172,27 +172,27 @@ pub fn exit_msg() {
     // a '\' at the end skips the newline
 
     println!(
-        "_____________         \n\
-         |Finished   |         \n\
-         |-----------|         \n\
-                               \n\
-         \t count       : {}   \n\
-         \t succeeded   : {}   \n\
-         \t faileds     : {}   \n\
-         _____________         \n\
-         |Types      |         \n\
-         |-----------|         \n\
-                               \n\
-         \t landscape   : {}   \n\
-         \t portrait    : {}   \n\
-         \t square      : {}   \n\
-         \t video       : {}   \n\
-         _____________         \n\
-         |Directory  |         \n\
-         |-----------|         \n\
-                               \n\
-         \t Dir created : {}   \n\
-         \t tmp removed : {}   ",
+        "_____________       \n\
+         |Finished   |       \n\
+         |-----------|       \n\
+                             \n\
+         \t count       : {} \n\
+         \t succeeded   : {} \n\
+         \t faileds     : {} \n\
+         _____________       \n\
+         |Types      |       \n\
+         |-----------|       \n\
+                             \n\
+         \t landscape   : {} \n\
+         \t portrait    : {} \n\
+         \t square      : {} \n\
+         \t video       : {} \n\
+         _____________       \n\
+         |Directory  |       \n\
+         |-----------|       \n\
+                             \n\
+         \t Dir created : {} \n\
+         \t tmp removed : {} ",
         // Finished
         pr,
         su,

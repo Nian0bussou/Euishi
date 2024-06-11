@@ -15,6 +15,19 @@ pub struct Countstruct {
 }
 
 impl Countstruct {
+    /// Creates a new [`Countstruct`].
+    /// :
+    /// Self {
+    ///     process: 0,
+    ///     succeed: 0,
+    ///     failed: 0,
+    ///     landscapes: 0,
+    ///     squares: 0,
+    ///     portraits: 0,
+    ///     video: 0,
+    ///     dir_created: 0,
+    ///     tmp_removed: 0,
+    /// }
     pub fn new() -> Self {
         Self {
             process: 0,
@@ -70,6 +83,7 @@ lazy_static! {
     pub static ref GLOBAL_COUNTS: Mutex<Countstruct> = Mutex::new(Countstruct::new());
 }
 
+/// start a global ref to [`Countstruct`]
 pub fn init_count() {
     let _ = GLOBAL_COUNTS;
 }

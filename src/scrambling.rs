@@ -2,6 +2,11 @@ use crate::{counting::GLOBAL_COUNTS, utils};
 use std::{fs, path::Path};
 use walkdir::WalkDir;
 
+/// move all files into the root directory provided by 'path'
+///
+/// # Panics
+///
+/// Panics if GLOBAL_COUNTS.lock().unwrap() panics;
 pub fn scramble(path: String) {
     let path = Path::new(&path);
 
