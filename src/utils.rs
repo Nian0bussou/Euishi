@@ -169,28 +169,27 @@ pub fn exit_msg() {
     // a '\' at the end skips the newline
 
     println!(
-        "_____________       \n\
-         |Finished   |       \n\
-         |-----------|       \n\
-                             \n\
-         \t count       : {} \n\
-         \t succeeded   : {} \n\
-         \t faileds     : {} \n\
-         _____________       \n\
-         |Types      |       \n\
-         |-----------|       \n\
-                             \n\
-         \t landscape   : {} \n\
-         \t portrait    : {} \n\
-         \t square      : {} \n\
-         \t video       : {} \n\
-         _____________       \n\
-         |Directory  |       \n\
-         |-----------|       \n\
-                             \n\
-         \t Dir created : {} \n\
-         \t tmp removed : {} \
-         ",
+        "_____________            \n\
+         |Finished   |            \n\
+         |-----------|            \n\
+                                  \n\
+         \x1b\\  count       : {} \n\
+         \x1b\\  succeeded   : {} \n\
+         \x1b\\  faileds     : {} \n\
+         _____________            \n\
+         |Types      |            \n\
+         |-----------|            \n\
+                                  \n\
+         \x1b\\  landscape   : {} \n\
+         \x1b\\  portrait    : {} \n\
+         \x1b\\  square      : {} \n\
+         \x1b\\  video       : {} \n\
+         _____________            \n\
+         |Directory  |            \n\
+         |-----------|            \n\
+                                  \n\
+         \x1b\\  Dir created : {} \n\
+         \x1b\\  tmp removed : {} \n",
         // Finished
         pr,
         su,
@@ -207,9 +206,9 @@ pub fn exit_msg() {
 }
 
 pub fn scramble_log(okerr: bool, f: PathBuf) {
-    let str_f = f.display().to_string();
+    let f = f.display().to_string();
     match okerr {
-        true => println!("       moved : {}", str_f),
-        false => println!("dit not move : {}", str_f),
+        true => println!("       moved : {}", f),
+        false => println!("dit not move : {}", f),
     }
 }
