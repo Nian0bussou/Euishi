@@ -1,4 +1,4 @@
-use crate::{counting::GLOBAL_COUNTS, utils};
+use crate::{counting::countpp, utils};
 use std::{fs, path::Path};
 use walkdir::WalkDir;
 
@@ -22,16 +22,14 @@ pub fn scramble(path: String) {
                 None => continue,
             };
             let new_path = path.join(filename);
-            let mut guard = GLOBAL_COUNTS.lock().unwrap();
-            guard.fieldPP("proc");
+            countpp("proc");
             match fs::rename(p, &new_path) {
                 Ok(_) => {
-                    guard.fieldPP("succ");
+                    countpp("succ");
                     utils::scramble_log(true, new_path);
                 }
                 Err(_) => {
-                    let mut guard = GLOBAL_COUNTS.lock().unwrap();
-                    guard.fieldPP("fail");
+                    countpp("fail");
                     utils::scramble_log(false, new_path);
                 }
             }

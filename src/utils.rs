@@ -1,4 +1,6 @@
 #![allow(non_snake_case)]
+#![allow(unused)]
+#![allow(dead_code)]
 use std::{
     collections::HashSet,
     env::{args, consts::OS},
@@ -79,12 +81,18 @@ pub fn get_path(hasPath: bool) -> String {
     path
 }
 
+/// move_scramble: bool,  
+/// doRemoveTmps: bool,   
+/// haveCustomPath: bool,
 pub struct Choices {
     pub move_scramble: bool,  // true -> move ; false -> scramble
     pub doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
     pub haveCustomPath: bool, // true -> has a path ; false -> yse default path
 }
 
+/// move_scramble: bool,  
+/// doRemoveTmps: bool,   
+/// haveCustomPath: bool,
 pub fn get_choices() -> Choices {
     let move_scramble: bool;
     //                        true -> move            ;  false -> scramble
@@ -166,7 +174,6 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 pub fn exit_msg() {
     let guard = GLOBAL_COUNTS.lock().unwrap();
     let (pr, su, fa, la, po, sq, vi, ds, tr) = guard.get_process();
-    line();
 
     // a '\' at the end skips the newline
     //
@@ -174,27 +181,33 @@ pub fn exit_msg() {
     //
 
     println!(
-        "_____________       \n\
-         |Finished   |       \n\
-         |-----------|       \n\
-                             \n\
-    \x1b\\  count       : {} \n\
-    \x1b\\  succeeded   : {} \n\
-    \x1b\\  faileds     : {} \n\
-         _____________       \n\
-         |Types      |       \n\
-         |-----------|       \n\
-                             \n\
-    \x1b\\  landscape   : {} \n\
-    \x1b\\  portrait    : {} \n\
-    \x1b\\  square      : {} \n\
-    \x1b\\  video       : {} \n\
-         _____________       \n\
-         |Directory  |       \n\
-         |-----------|       \n\
-                             \n\
-    \x1b\\  Dir created : {} \n\
-    \x1b\\  tmp removed : {} \n",
+        "            \n\
+_________________    \n\
+|               |    \n\
+|=|             |    \n\
+| |Finished     |    \n\
+| |=============|    \n\
+|               |    \n\
+|   count       : {} \n\
+|   succeeded   : {} \n\
+|   faileds     : {} \n\
+|=|             |    \n\
+| |Types        |    \n\
+| |=============|    \n\
+|               |    \n\
+|   landscape   : {} \n\
+|   portrait    : {} \n\
+|   square      : {} \n\
+|   video       : {} \n\
+|=|             |    \n\
+| |Directory    |    \n\
+| |=============|    \n\
+|               |    \n\
+|   Dir created : {} \n\
+|   tmp removed : {} \n\
+|               |    \n\
+|---------------|  \n\
+",
         // Finished
         pr,
         su,
@@ -217,29 +230,5 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
     match okerr {
         true => println!("{}", truemsg),
         false => println!("{}", falsems),
-    }
-}
-
-#[allow(dead_code)]
-fn asdf() {
-    if false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-        || false
-    {
-        println!()
     }
 }

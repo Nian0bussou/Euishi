@@ -1,5 +1,7 @@
 #![allow(non_snake_case)]
 use std::{thread, time::Instant};
+
+use crate::utils::line;
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -82,7 +84,8 @@ struct TimingGuard {
 impl Drop for TimingGuard {
     fn drop(&mut self) {
         let duration = self.start.elapsed();
-        println!("time: {:?}", duration)
+        println!("time taken: {:?}", duration);
+        line();
     }
 }
 

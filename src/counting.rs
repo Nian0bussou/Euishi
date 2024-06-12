@@ -57,26 +57,6 @@ impl Countstruct {
             self.tmp_removed,
         )
     }
-
-    /// # increase by 1 a field in [Countstruct].
-    /// select which one by providing one of the following [`&str`]
-    /// "proc", "succ", "fail", "land", "port", "squa", "vide", "dir", "tmp",
-    /// # Panics
-    /// Panics if the provided [`&str`].
-    pub fn fieldPP(&mut self, field: &str) {
-        match field {
-            "proc" => self.process += 1,
-            "succ" => self.succeed += 1,
-            "fail" => self.failed += 1,
-            "land" => self.landscapes += 1,
-            "port" => self.portraits += 1,
-            "squa" => self.squares += 1,
-            "vide" => self.video += 1,
-            "dir" => self.dir_created += 1,
-            "tmp" => self.tmp_removed += 1,
-            _ => panic!("invalid field"),
-        }
-    }
 }
 
 lazy_static! {
@@ -86,4 +66,24 @@ lazy_static! {
 /// start a global ref to [`Countstruct`]
 pub fn init_count() {
     let _ = GLOBAL_COUNTS;
+}
+/// # increase by 1 a field in [GLOBAL_COUNTS] which is a [Countstruct].
+/// select which one by providing one of the following [`&str`]
+/// "proc", "succ", "fail", "land", "port", "squa", "vide", "dir", "tmp",
+/// # Panics
+/// Panics if the provided [`&str`].
+pub fn countpp(field: &str) {
+    let mut c = GLOBAL_COUNTS.lock().unwrap();
+    match field {
+        "proc" => c.process += 1,
+        "succ" => c.succeed += 1,
+        "fail" => c.failed += 1,
+        "land" => c.landscapes += 1,
+        "port" => c.portraits += 1,
+        "squa" => c.squares += 1,
+        "vide" => c.video += 1,
+        "dir" => c.dir_created += 1,
+        "tmp" => c.tmp_removed += 1,
+        _ => panic!("invalid field"),
+    }
 }

@@ -1,5 +1,5 @@
 use crate::{
-    counting::GLOBAL_COUNTS,
+    counting::countpp,
     utils::{self, errorPrint},
 };
 use image::image_dimensions;
@@ -146,12 +146,11 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
 /// Panics if [`wrap_move`] panics.
 fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &str, source: &str) {
     {
-        let mut guard = GLOBAL_COUNTS.lock().unwrap();
         match format {
-            "land" => guard.fieldPP("land"),
-            "portrait" => guard.fieldPP("port"),
-            "square" => guard.fieldPP("squa"),
-            "video" => guard.fieldPP("vide"),
+            "land" => countpp("land"),
+            "portrait" => countpp("port"),
+            "square" => countpp("squa"),
+            "video" => countpp("vide"),
             "error" => (),
             _ => panic!("invalid entry match format"),
         };
@@ -172,18 +171,14 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
     let parent_new = tmp.to_str().unwrap();
 
     // use match because using unwrap hangs the code
-    let mut guard = match GLOBAL_COUNTS.lock() {
-        Ok(g) => g,
-        Err(_) => panic!("couldn't lock guard"),
-    };
-    guard.fieldPP("proc");
+    countpp("proc");
     match fs::rename(file_path, new_path) {
         Ok(_) => {
-            guard.fieldPP("succ");
+            countpp("succ");
             utils::file_output(source, parent_new, color, format)
         }
         Err(err) => {
-            guard.fieldPP("fail");
+            countpp("fail");
             utils::errorPrint(err.to_string());
         }
     }
@@ -196,9 +191,8 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
 /// Panics if cannot lock [`GLOBAL_COUNTS`]
 fn make_folders(dests: &Vec<&PathBuf>) {
     for d in dests {
-        let mut guard = GLOBAL_COUNTS.lock().unwrap();
         match fs::create_dir(d) {
-            Ok(_) => guard.fieldPP("dir"),
+            Ok(_) => countpp("dir"),
             _ => (),
         };
     }
