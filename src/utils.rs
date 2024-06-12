@@ -219,3 +219,27 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
         false => println!("{}", falsems),
     }
 }
+
+#[allow(dead_code)]
+fn asdf() {
+    if false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+        || false
+    {
+        println!()
+    }
+}

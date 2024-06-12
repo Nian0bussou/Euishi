@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use std::{ptr::null, thread, time::Instant};
+use std::{thread, time::Instant};
 mod counting;
 mod movingfn;
 mod scrambling;
@@ -18,7 +18,6 @@ fn main() {
     let path: String = utils::get_path(choices.haveCustomPath);
     counting::init_count();
     threads_sorting(path.clone(), choices.move_scramble);
-
     if choices.doRemoveTmps {
         threads_tmps(path);
     }
@@ -27,8 +26,8 @@ fn main() {
 
 /// handle the multithreading of
 ///
-/// either : movingfn::move_stuff(source),
-/// or     : scrambling::scramble(source)
+/// either movingfn::move_stuff(source)
+/// or     scrambling::scramble(source)
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
     let handles: Vec<_> = subs
@@ -49,10 +48,6 @@ fn threads_sorting(path: String, choice: bool) {
 
 /// go through every directory and each subdirectory recursively
 /// to remove .tmp files
-///
-/// # Panics
-///
-/// Panics if .
 fn threads_tmps(path: String) {
     println!("removing tmps files");
     let subs: Vec<String> = utils::get_folders(&path);
@@ -71,7 +66,6 @@ fn threads_tmps(path: String) {
             subsub.push(t);
         }
     }
-    //
     let handles: Vec<_> = subsub
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))
