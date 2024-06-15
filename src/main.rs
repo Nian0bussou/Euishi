@@ -18,7 +18,6 @@ fn main() {
     let _t = TimingGuard::new();
     let choices = utils::get_choices();
     let path: String = utils::get_path(choices.haveCustomPath);
-    counting::init_count();
     threads_sorting(path.clone(), choices.move_scramble);
     if choices.doRemoveTmps {
         threads_tmps(path);

@@ -10,7 +10,7 @@ use std::{
 };
 use term_size::dimensions;
 
-use crate::counting::GLOBAL_COUNTS;
+use crate::counting::get_process;
 
 /// # outputs info of file
 /// color can be : "red", "blue", "green", "cyan", "magenta", "purple"m", "grey", "yellow", "white,
@@ -41,7 +41,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     };
     let tab = "\t";
     let path = Path::new(&source);
-    let padded_dir_str = format!("{:<40}", path.display());
+    let padded_dir_str = format!("{:<35}", path.display());
     println!(
         "{}{}{}{}{} <|====|> {}{}{}",
         tab, color, special, tab, padded_dir_str, " ", dest_path, reset
@@ -172,54 +172,29 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 }
 
 pub fn exit_msg() {
-    let guard = GLOBAL_COUNTS.lock().unwrap();
-    let (pr, su, fa, la, po, sq, vi, ds, tr) = guard.get_process();
+    let (p, l, s, o, v) = get_process();
 
-    // a '\' at the end skips the newline
-    //
-    //
-    //
+    if p == 0 && l == 0 && s == 0 && o == 0 && v == 0 {
+        return;
+    }
 
     println!(
         "            \n\
 _________________    \n\
-|               |    \n\
 |=|             |    \n\
 | |Finished     |    \n\
 | |=============|    \n\
-|               |    \n\
 |   count       : {} \n\
-|   succeeded   : {} \n\
-|   faileds     : {} \n\
 |=|             |    \n\
 | |Types        |    \n\
 | |=============|    \n\
-|               |    \n\
 |   landscape   : {} \n\
 |   portrait    : {} \n\
 |   square      : {} \n\
 |   video       : {} \n\
-|=|             |    \n\
-| |Directory    |    \n\
-| |=============|    \n\
-|               |    \n\
-|   Dir created : {} \n\
-|   tmp removed : {} \n\
-|               |    \n\
-|---------------|  \n\
+|---------------|    \n\
 ",
-        // Finished
-        pr,
-        su,
-        fa,
-        // types
-        la,
-        po,
-        sq,
-        vi,
-        // Directory
-        ds,
-        tr,
+        p, l, o, s, v
     );
 }
 

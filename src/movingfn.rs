@@ -1,5 +1,5 @@
 use crate::{
-    counting::countpp,
+    counting::pcount,
     utils::{self, errorPrint},
 };
 use image::image_dimensions;
@@ -147,10 +147,10 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
 fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &str, source: &str) {
     {
         match format {
-            "land" => countpp("land"),
-            "portrait" => countpp("port"),
-            "square" => countpp("squa"),
-            "video" => countpp("vide"),
+            "land" => pcount("land"),
+            "portrait" => pcount("port"),
+            "square" => pcount("squa"),
+            "video" => pcount("vide"),
             "error" => (),
             _ => panic!("invalid entry match format"),
         };
@@ -171,14 +171,14 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
     let parent_new = tmp.to_str().unwrap();
 
     // use match because using unwrap hangs the code
-    countpp("proc");
+    pcount("proc");
     match fs::rename(file_path, new_path) {
         Ok(_) => {
-            countpp("succ");
+            pcount("succ");
             utils::file_output(source, parent_new, color, format)
         }
         Err(err) => {
-            countpp("fail");
+            pcount("fail");
             utils::errorPrint(err.to_string());
         }
     }
@@ -192,7 +192,7 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, s
 fn make_folders(dests: &Vec<&PathBuf>) {
     for d in dests {
         match fs::create_dir(d) {
-            Ok(_) => countpp("dir"),
+            Ok(_) => pcount("dir"),
             _ => (),
         };
     }

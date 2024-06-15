@@ -1,4 +1,4 @@
-use crate::{counting::countpp, utils};
+use crate::{counting::pcount, utils};
 use std::{fs, path::Path};
 use walkdir::WalkDir;
 
@@ -22,14 +22,14 @@ pub fn scramble(path: String) {
                 None => continue,
             };
             let new_path = path.join(filename);
-            countpp("proc");
+            pcount("proc");
             match fs::rename(p, &new_path) {
                 Ok(_) => {
-                    countpp("succ");
+                    pcount("succ");
                     utils::scramble_log(true, new_path);
                 }
                 Err(_) => {
-                    countpp("fail");
+                    pcount("fail");
                     utils::scramble_log(false, new_path);
                 }
             }

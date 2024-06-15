@@ -2,7 +2,7 @@ use std::fs;
 
 use walkdir::WalkDir;
 
-use crate::counting::countpp;
+use crate::counting::pcount;
 
 /// # remove temp
 /// walk through dir to remove .tmp files
@@ -16,7 +16,7 @@ pub fn remove_tmps(path: &str) {
             println!("{}", path.display().to_string())
         };
         if path.is_file() && path.extension().unwrap() == "tmp" {
-            countpp("tmp");
+            pcount("tmp");
             let _ = fs::remove_file(path);
         }
     }
