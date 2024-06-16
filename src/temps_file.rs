@@ -4,10 +4,6 @@ use walkdir::WalkDir;
 
 use crate::counting::pcount;
 
-/// # remove temp
-/// walk through dir to remove .tmp files
-/// avoid using if another program is handling (download, editing a document, etc.)
-/// in one of the subdirectory
 pub fn remove_tmps(path: &str) {
     for entry in WalkDir::new(path) {
         let entry = entry.unwrap();

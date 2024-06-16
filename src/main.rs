@@ -16,19 +16,14 @@ mod utils;
 
 fn main() {
     let _t = TimingGuard::new();
-    let choices = utils::get_choices();
-    let path: String = utils::get_path(choices.haveCustomPath);
-    threads_sorting(path.clone(), choices.move_scramble);
-    if choices.doRemoveTmps {
-        threads_tmps(path);
-    }
+    let (move_scramble, doRemoveTmps, haveCustomPath) = utils::get_choices().getAttrs();
+    let path: String = utils::get_path(haveCustomPath);
+
+    threads_sorting(path.clone(), move_scramble);
+    threads_tmps(path, doRemoveTmps);
     utils::exit_msg();
 }
 
-/// handle the multithreading of
-///
-/// either movingfn::move_stuff(source)
-/// or     scrambling::scramble(source)
 fn threads_sorting(path: String, choice: bool) {
     let subs: Vec<String> = utils::get_folders(&path);
     let handles: Vec<_> = subs
@@ -36,20 +31,21 @@ fn threads_sorting(path: String, choice: bool) {
         .map(|source| {
             thread::spawn(move || match choice {
                 true => movingfn::move_stuff(source),
-                // false => panic!("false in hoice"),
-                false => scrambling::scramble(source), // FIXME
+                false => scrambling::scramble(source),
             })
         })
         .collect();
+
     // wait for all threads to finish
     for handle in handles {
         handle.join().unwrap();
     }
 }
 
-/// go through every directory and each subdirectory recursively
-/// to remove .tmp files
-fn threads_tmps(path: String) {
+fn threads_tmps(path: String, on: bool) {
+    if !on {
+        return;
+    }
     println!("removing tmps files");
     let subs: Vec<String> = utils::get_folders(&path);
     //

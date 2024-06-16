@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(unused)]
 #![allow(dead_code)]
+use crate::counting::get_process;
 use std::{
     collections::HashSet,
     env::{args, consts::OS},
@@ -10,13 +11,6 @@ use std::{
 };
 use term_size::dimensions;
 
-use crate::counting::get_process;
-
-/// # outputs info of file
-/// color can be : "red", "blue", "green", "cyan", "magenta", "purple"m", "grey", "yellow", "white,
-///
-/// dest_type can be : "land", "square", "portrait", "video", "error"
-///
 pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
     let color = match color_name {
@@ -43,12 +37,11 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
     let path = Path::new(&source);
     let padded_dir_str = format!("{:<35}", path.display());
     println!(
-        "{}{}{}{}{} <|====|> {}{}{}",
-        tab, color, special, tab, padded_dir_str, " ", dest_path, reset
+        "\t{}{}\t{} <|====|> {}{}",
+        color, special, padded_dir_str, dest_path, reset
     )
 }
 
-/// print an error message alongside the error
 pub fn errorPrint(err: String) {
     line();
     let red = "\x1b[31m";
@@ -69,7 +62,6 @@ pub fn get_path(hasPath: bool) -> String {
         path = args[3].clone();
     } else {
         match OS {
-            // default path
             "windows" => path = "D:/grapper/".to_owned(),
             "linux" => path = "/mnt/d/grapper/".to_owned(),
             _ => panic!("cant get path"),
@@ -81,31 +73,31 @@ pub fn get_path(hasPath: bool) -> String {
     path
 }
 
-/// move_scramble: bool,  
-/// doRemoveTmps: bool,   
-/// haveCustomPath: bool,
 pub struct Choices {
     pub move_scramble: bool,  // true -> move ; false -> scramble
     pub doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
     pub haveCustomPath: bool, // true -> has a path ; false -> yse default path
 }
 
-/// move_scramble: bool,  
-/// doRemoveTmps: bool,   
-/// haveCustomPath: bool,
+impl Choices {
+    pub fn getAttrs(&self) -> (bool, bool, bool) {
+        (self.move_scramble, self.doRemoveTmps, self.haveCustomPath)
+    }
+}
+
 pub fn get_choices() -> Choices {
+    //  move_scramble :   true -> move            ;  false -> scramble
+    //  doRemoveTmps  :   true -> call removeTmps ;  false -> dont call fn
+    //  haveCustomPath:   true -> has a path      ;  false -> yse default path
     let move_scramble: bool;
-    //                        true -> move            ;  false -> scramble
     let doRemoveTmps: bool;
-    //                        true -> call removeTmps ;  false -> dont call fn
     let haveCustomPath: bool;
-    //                        true -> has a path      ;  false -> yse default path
 
-    let va: Vec<_> = args().collect();
-    let lva = va.len();
+    let argss: Vec<_> = args().collect();
+    let largss = argss.len();
 
-    if lva >= 2 {
-        move_scramble = if let Ok(n) = va[1].parse::<u8>() {
+    if largss >= 2 {
+        move_scramble = if let Ok(n) = argss[1].parse::<u8>() {
             if n == 1 {
                 false
             } else {
@@ -114,33 +106,27 @@ pub fn get_choices() -> Choices {
         } else {
             panic!("cant get choices ; if len >= 2")
         };
-
-        if lva >= 3 {
-            doRemoveTmps = if let Ok(n) = va[2].parse::<u8>() {
-                if n == 1 {
-                    false
-                } else {
-                    true
-                }
+    } else {
+        move_scramble = true
+    }
+    if largss >= 3 {
+        doRemoveTmps = if let Ok(n) = argss[2].parse::<u8>() {
+            if n == 1 {
+                false
             } else {
-                panic!("cant get choices ; if len >= 3")
-            };
-
-            if lva >= 4 {
-                haveCustomPath = true;
-            } else {
-                haveCustomPath = false;
+                true
             }
         } else {
-            doRemoveTmps = false;
-            haveCustomPath = false;
-        }
+            panic!("cant get choices ; if len >= 3")
+        };
     } else {
-        move_scramble = true;
-        doRemoveTmps = false;
+        doRemoveTmps = false
+    }
+    if largss >= 4 {
+        haveCustomPath = true;
+    } else {
         haveCustomPath = false;
     }
-
     Choices {
         move_scramble,
         doRemoveTmps,

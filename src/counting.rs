@@ -34,7 +34,6 @@ pub fn pcount(field: &str) {
     }
 }
 
-//pub struct Countstruct {
 //    process: u128,
 //    succeed: u128,
 //    failed: u128,
@@ -44,7 +43,6 @@ pub fn pcount(field: &str) {
 //    video: u128,
 //    dir_created: u128,
 //    tmp_removed: u128,
-//}
 
 pub fn get_process() -> (u128, u128, u128, u128, u128) {
     let p = PROCESSED.lock().unwrap();
