@@ -48,21 +48,21 @@ fn threads_tmps(path: String, on: bool) {
     }
     println!("removing tmps files");
     let subs: Vec<String> = utils::get_folders(&path);
-    //
-    let mut tmp_subs: Vec<String> = Vec::new();
-    // format string to have '/' at the end to have a valid path because im using String instead of
-    // Path like an idiot
-    for t in subs {
-        let s = format!("{}/", t);
-        tmp_subs.push(s)
-    }
-    let mut subsub: Vec<String> = Vec::new();
-    for sub in tmp_subs {
-        let tmp_subs = utils::get_folders(&sub);
-        for t in tmp_subs {
-            subsub.push(t);
-        }
-    }
+    let tmp_subs: Vec<String> = subs
+        .into_iter()
+        .map(|t| {
+            let s = format!("{}/", t);
+            s
+        })
+        .collect();
+
+    let subsub: Vec<String> = tmp_subs
+        .into_iter()
+        .map(|sub| {
+            let ts = utils::get_folders(&sub);
+            ts.into_iter().map(|t| t).collect()
+        })
+        .collect();
     let handles: Vec<_> = subsub
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))
