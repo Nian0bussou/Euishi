@@ -33,18 +33,25 @@ so path requires choice1 & choice2 to be made before.
 - 1 => call remove_tmps
 - anything else => doesnt call remove_tmps
 
-remove_tmps is a function that will walk through the directories to remove abandonned tmp files (most likely to happen if the program is stop midway while sorting, or if there was already tmp files)
+remove_tmps is a function that will
+walk through the directories to remove 
+abandonned tmp files 
+(most likely to happen if the program is stop midway while sorting,
+or if there was already tmp files)
 
 ### choice2
 - 0 => sort the files
 - 1 => scramble the files into their respective root subdir
 
-
 ### path
 if the path is specified, it will use it as the root dir (where all the subdirs are located)
 
 however **NO VERIFICATION IS DONE** 
-some directories are automatically made, however the program will only move images (no extension verification yet, requires the file to have width & height which excludes pretty much everything except images)
+some directories are automatically made,
+however the program will only move images 
+(no extension verification yet,
+requires the file to have width &
+height which excludes pretty much everything except images)
 make sure the path is correct
 
 ### Sort 
