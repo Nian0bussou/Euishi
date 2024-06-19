@@ -1,32 +1,28 @@
 #![allow(non_snake_case)]
-use std::{thread, time::Instant};
-
-use crate::utils::line;
 mod counting;
 mod movingfn;
 mod scrambling;
 mod temps_file;
+mod tests;
 mod utils;
-
-//////////////////////////////////////
-//                                  //
-//  I WILL POST CRINGE IN #GENERAL  //
-//                                  //
-//////////////////////////////////////
+use crate::utils::line;
+use std::{thread, time::Instant};
 
 fn main() {
     let _t = TimingGuard::new();
     let (move_scramble, doRemoveTmps, haveCustomPath) = utils::get_choices().getAttrs();
     let path: String = utils::get_path(haveCustomPath);
+    let printmsg = true;
 
     threads_sorting(path.clone(), move_scramble);
-    threads_tmps(path, doRemoveTmps);
+    if doRemoveTmps {
+        threads_tmps(path, printmsg)
+    }
     utils::exit_msg();
 }
 
 fn threads_sorting(path: String, choice: bool) {
-    let subs: Vec<String> = utils::get_folders(&path);
-    let handles: Vec<_> = subs
+    let handles: Vec<_> = utils::get_folders(&path)
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
@@ -42,30 +38,30 @@ fn threads_sorting(path: String, choice: bool) {
     }
 }
 
-fn threads_tmps(path: String, on: bool) {
-    if !on {
-        return;
-    }
+fn threads_tmps(path: String, printmsg: bool) {
     println!("removing tmps files");
-    let subs: Vec<String> = utils::get_folders(&path);
-    let tmp_subs: Vec<String> = subs
-        .into_iter()
+
+    let tmp = utils::get_folders(&path);
+    let vtmp: Vec<_> = tmp
+        .iter()
         .map(|t| {
-            let s = format!("{}/", t);
+            let s: String = format!("{}/", t);
             s
         })
         .collect();
-
-    let subsub: Vec<String> = tmp_subs
-        .into_iter()
-        .map(|sub| {
-            let ts = utils::get_folders(&sub);
-            ts.into_iter().map(|t| t).collect()
-        })
+    let vvtmp: Vec<String> = vtmp
+        .iter()
+        .flat_map(|sub| utils::get_folders(sub))
         .collect();
-    let handles: Vec<_> = subsub
+    //let mut vvtmp: Vec<String> = Vec::new();
+    //for sub in vtmp {
+    //    for s in utils::get_folders(&sub) {
+    //        vvtmp.push(s)
+    //    }
+    //}
+    let handles: Vec<_> = vvtmp
         .into_iter()
-        .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source)))
+        .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source, printmsg)))
         .collect();
     for handle in handles {
         handle.join().unwrap();

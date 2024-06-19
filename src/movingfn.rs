@@ -18,7 +18,6 @@ pub fn move_stuff(dir: String) {
     let dbadqualityportrait = Path::new(&dbadquality).join("p");
     let dvideo = Path::new(&dir).join("video");
     let derrors = Path::new(&dir).join("errors");
-
     let destinations: Vec<&PathBuf> = vec![
         &dwall,
         &dother,

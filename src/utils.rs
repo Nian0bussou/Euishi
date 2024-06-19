@@ -9,7 +9,7 @@ use std::{
     path::{Path, PathBuf},
     u8,
 };
-use term_size::dimensions;
+//use term_size::dimensions;
 
 pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
@@ -51,7 +51,8 @@ pub fn errorPrint(err: String) {
 }
 
 pub fn line() {
-    let (w, _) = dimensions().unwrap();
+    //let (w, _) = dimensions().unwrap();
+    let w = 5;
     println!("{}", "_".repeat(w));
 }
 
@@ -98,11 +99,7 @@ pub fn get_choices() -> Choices {
 
     if largss >= 2 {
         move_scramble = if let Ok(n) = argss[1].parse::<u8>() {
-            if n == 1 {
-                false
-            } else {
-                true
-            }
+            n == 1
         } else {
             panic!("cant get choices ; if len >= 2")
         };
@@ -111,11 +108,7 @@ pub fn get_choices() -> Choices {
     }
     if largss >= 3 {
         doRemoveTmps = if let Ok(n) = argss[2].parse::<u8>() {
-            if n == 1 {
-                false
-            } else {
-                true
-            }
+            n == 1
         } else {
             panic!("cant get choices ; if len >= 3")
         };
