@@ -62,12 +62,6 @@ fn threads_tmps(path: String, printmsg: bool) {
         .iter()
         .flat_map(|sub| utils::get_folders(sub))
         .collect();
-    //let mut vvtmp: Vec<String> = Vec::new();
-    //for sub in vtmp {
-    //    for s in utils::get_folders(&sub) {
-    //        vvtmp.push(s)
-    //    }
-    //}
     let handles: Vec<_> = vvtmp
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source, printmsg)))
