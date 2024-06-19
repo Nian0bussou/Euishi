@@ -10,7 +10,7 @@ use std::{thread, time::Instant};
 
 fn main() {
     let _t = TimingGuard::new();
-    let (move_scramble, doRemoveTmps, haveCustomPath) = utils::get_choices().getAttrs();
+    let (move_scramble, doRemoveTmps, haveCustomPath) = utils::g_Choices();
     let path: String = utils::get_path(haveCustomPath);
     let printmsg = true;
 

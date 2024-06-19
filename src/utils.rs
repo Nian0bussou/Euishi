@@ -52,7 +52,7 @@ pub fn errorPrint(err: String) {
 
 pub fn line() {
     //let (w, _) = dimensions().unwrap();
-    let w = 5;
+    let w = 15;
     println!("{}", "_".repeat(w));
 }
 
@@ -74,19 +74,10 @@ pub fn get_path(hasPath: bool) -> String {
     path
 }
 
-pub struct Choices {
-    pub move_scramble: bool,  // true -> move ; false -> scramble
-    pub doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
-    pub haveCustomPath: bool, // true -> has a path ; false -> yse default path
-}
-
-impl Choices {
-    pub fn getAttrs(&self) -> (bool, bool, bool) {
-        (self.move_scramble, self.doRemoveTmps, self.haveCustomPath)
-    }
-}
-
-pub fn get_choices() -> Choices {
+/// move_scramble: bool,  // true -> move ; false -> scramble
+/// doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
+/// haveCustomPath: bool, // true -> has a path ; false -> yse default path
+pub fn g_Choices() -> (bool, bool, bool) {
     //  move_scramble :   true -> move            ;  false -> scramble
     //  doRemoveTmps  :   true -> call removeTmps ;  false -> dont call fn
     //  haveCustomPath:   true -> has a path      ;  false -> yse default path
@@ -94,11 +85,11 @@ pub fn get_choices() -> Choices {
     let doRemoveTmps: bool;
     let haveCustomPath: bool;
 
-    let argss: Vec<_> = args().collect();
-    let largss = argss.len();
+    let ass: Vec<_> = args().collect();
+    let lass = ass.len();
 
-    if largss >= 2 {
-        move_scramble = if let Ok(n) = argss[1].parse::<u8>() {
+    if lass >= 2 {
+        move_scramble = if let Ok(n) = ass[1].parse::<u8>() {
             n == 1
         } else {
             panic!("cant get choices ; if len >= 2")
@@ -106,8 +97,8 @@ pub fn get_choices() -> Choices {
     } else {
         move_scramble = true
     }
-    if largss >= 3 {
-        doRemoveTmps = if let Ok(n) = argss[2].parse::<u8>() {
+    if lass >= 3 {
+        doRemoveTmps = if let Ok(n) = ass[2].parse::<u8>() {
             n == 1
         } else {
             panic!("cant get choices ; if len >= 3")
@@ -115,16 +106,12 @@ pub fn get_choices() -> Choices {
     } else {
         doRemoveTmps = false
     }
-    if largss >= 4 {
+    if lass >= 4 {
         haveCustomPath = true;
     } else {
         haveCustomPath = false;
     }
-    Choices {
-        move_scramble,
-        doRemoveTmps,
-        haveCustomPath,
-    }
+    (self.move_scramble, self.doRemoveTmps, self.haveCustomPath)
 }
 
 pub fn get_folders(directory: &str) -> Vec<String> {
