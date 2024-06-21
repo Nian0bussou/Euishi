@@ -2,10 +2,9 @@
 use crate::counting::get_process;
 use std::{
     collections::HashSet,
-    env::{args, consts::OS},
+    env::consts::OS,
     fs, io, panic,
     path::{Path, PathBuf},
-    u8,
 };
 //use term_size::dimensions;
 
@@ -53,62 +52,24 @@ pub fn line() {
     println!("{}", "_".repeat(w));
 }
 
-pub fn get_path(hasPath: bool) -> String {
-    let path: String;
-    let args: Vec<_> = args().collect();
-    if hasPath {
-        path = args[3].clone();
-    } else {
-        match OS {
-            "windows" => path = "D:/grapper/".to_owned(),
-            "linux" => path = "/mnt/d/grapper/".to_owned(),
+pub fn get_path(givenpath: Option<String>) -> String {
+    let path = match givenpath {
+        Some(p) => p,
+        None => match OS {
+            "windows" => "D:/grapper/".to_owned(),
+            "linux" => "mnt/d/grapper/".to_owned(),
             _ => panic!("cant get path"),
-        }
+        },
+    };
+
+    if 0 == 0 {
+        panic!("got this path :::: {}", path)
     }
+
     if !(Path::new(&path).exists()) {
         panic!("directory not found");
     }
     path
-}
-
-/// move_scramble: bool,  // true -> move ; false -> scramble
-/// doRemoveTmps: bool,   // true -> call removeTmps ; false -> dont call fn
-/// haveCustomPath: bool, // true -> has a path ; false -> yse default path
-pub fn g_Choices() -> (bool, bool, bool) {
-    //  move_scramble :   true -> move            ;  false -> scramble
-    //  doRemoveTmps  :   true -> call removeTmps ;  false -> dont call fn
-    //  haveCustomPath:   true -> has a path      ;  false -> yse default path
-    let move_scramble: bool;
-    let doRemoveTmps: bool;
-    let haveCustomPath: bool;
-
-    let ass: Vec<_> = args().collect();
-    let lass = ass.len();
-
-    if lass >= 2 {
-        move_scramble = if let Ok(n) = ass[1].parse::<u8>() {
-            n == 1
-        } else {
-            panic!("cant get choices ; if len >= 2")
-        };
-    } else {
-        move_scramble = true
-    }
-    if lass >= 3 {
-        doRemoveTmps = if let Ok(n) = ass[2].parse::<u8>() {
-            n == 1
-        } else {
-            panic!("cant get choices ; if len >= 3")
-        };
-    } else {
-        doRemoveTmps = false
-    }
-    if lass >= 4 {
-        haveCustomPath = true;
-    } else {
-        haveCustomPath = false;
-    }
-    (move_scramble, doRemoveTmps, haveCustomPath)
 }
 
 pub fn get_folders(directory: &str) -> Vec<String> {

@@ -1,3 +1,23 @@
+```
+ /$$$$$$$                        /$$
+| $$__  $$                      | $$
+| $$  \ $$ /$$   /$$  /$$$$$$$ /$$$$$$
+| $$$$$$$/| $$  | $$ /$$_____/|_  $$_/
+| $$__  $$| $$  | $$|  $$$$$$   | $$
+| $$  \ $$| $$  | $$ \____  $$  | $$ /$$
+| $$  | $$|  $$$$$$/ /$$$$$$$/  |  $$$$/
+|__/  |__/ \______/ |_______/    \___/
+
+ /$$      /$$
+| $$$    /$$$
+| $$$$  /$$$$  /$$$$$$  /$$    /$$  /$$$$$$
+| $$ $$/$$ $$ /$$__  $$|  $$  /$$/ /$$__  $$
+| $$  $$$| $$| $$  \ $$ \  $$/$$/ | $$$$$$$$
+| $$\  $ | $$| $$  | $$  \  $$$/  | $$_____/
+| $$ \/  | $$|  $$$$$$/   \  $/   |  $$$$$$$
+|__/     |__/ \______/     \_/     \_______/
+```
+
 # RustMove
 
 Program to move images based on their dimensions and pixel count
@@ -12,7 +32,7 @@ git clone https://github.com/Nian0bussou/rustmove.git
 can be run using `cargo run`
 
 binary file can be found at `./target/debug/rustmove` after compiling with cargo,
-the file itself has no dependency, so it can be moved wherever you like.
+the file itself has no dependency, so it can be moved wherever you like or symlink'd.
 
 # Usage 
 `rustmove <choice1> <choice2> <path>`
@@ -22,7 +42,7 @@ the file itself has no dependency, so it can be moved wherever you like.
 uses the defaults
 - wont call remove_tmps
 - sort the files
-- default path `"/mnt/d/grapper/"`
+- default path `"/mnt/d/grapper/"` on *nix based system or `"D:/grapper/` on windows
 
 ## Choices
 each choice will be processed by the order, 
@@ -30,6 +50,10 @@ so choice2 requires choice1 to be made before,
 so path requires choice1 & choice2 to be made before.
 
 ### choice1
+- 0 => sort the files
+- 1 => scramble the files into their respective root subdir
+
+### choice2
 - 1 => call remove_tmps
 - anything else => doesnt call remove_tmps
 
@@ -39,9 +63,12 @@ abandonned tmp files
 (most likely to happen if the program is stop midway while sorting,
 or if there was already tmp files)
 
-### choice2
-- 0 => sort the files
-- 1 => scramble the files into their respective root subdir
+***avoid using remove_tmps when a program is using a file in the directories provided,***
+
+***could cause data loss***
+
+remove_tmps can output each file it is passing 
+
 
 ### path
 if the path is specified, it will use it as the root dir (where all the subdirs are located)
