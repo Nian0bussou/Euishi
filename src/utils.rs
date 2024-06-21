@@ -57,14 +57,10 @@ pub fn get_path(givenpath: Option<String>) -> String {
         Some(p) => p,
         None => match OS {
             "windows" => "D:/grapper/".to_owned(),
-            "linux" => "mnt/d/grapper/".to_owned(),
+            "linux" => "/mnt/d/grapper/".to_owned(),
             _ => panic!("cant get path"),
         },
     };
-
-    if 0 == 0 {
-        panic!("got this path :::: {}", path)
-    }
 
     if !(Path::new(&path).exists()) {
         panic!("directory not found");
