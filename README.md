@@ -24,9 +24,9 @@ Program to move images based on their dimensions and pixel count
 
 # install
 
-clone the repo : 
+cloning the repo : 
 ```
-git clone https://github.com/Nian0bussou/rustmove.git
+git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 ```
 
 ### using :
