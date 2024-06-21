@@ -70,7 +70,7 @@ requires the file to have width &
 height which excludes pretty much everything except images)
 make sure the path is correct
 
-##### Sort 
+#### Sort 
 
 The program will sort the subdirectories in the path provided (in this case 'your-path')
 
@@ -115,7 +115,7 @@ subdir2/
 etc.
 
 
-##### scramble
+# scramble
 
 The program will scramble the subdirectories in the path provided (in this case 'your-path')
 
