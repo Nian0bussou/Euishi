@@ -29,7 +29,7 @@ clone the repo :
 git clone https://github.com/Nian0bussou/rustmove.git
 ```
 
-###### using :
+### using :
  - with `cargo run` in the same directory
  - with `cargo build`, then running the binary at `./target/debug/rustmove`
  - using `make` along the provided `Makefile` producing a binary at `./rustmove`
