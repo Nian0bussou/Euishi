@@ -39,15 +39,15 @@ git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 
 - flags
     - path ; provides the path to be used ; defaults to `/mnt/d/grapper/`
-    - move_ ; will sort the files
+    - `move` ; will sort the files
     - scramble ; will scramble the files
-    - removeTmps ; will use remove_tmps
+    - removeTmps ; will use removetmps
     - verbose ; will print which file it is checking when using removeTmps
 
-if both move_ & scramble are flagged , scramble will run first
+if both `move` & scramble are flagged , scramble will run first
 
 
-##### remove_tmps
+##### removetmps
 
 !! is a function that will
 walk through the directories to remove 
@@ -55,7 +55,7 @@ abandonned tmp files
 (most likely to happen if this program is stop midway while sorting,
 or if there was already tmp files made by other programs)
 
-***avoid using remove_tmps when a program is using a file in the directories provided,***
+***avoid using removetmps when a program is using a file in the directories provided,***
 
 ***could cause data loss***
 

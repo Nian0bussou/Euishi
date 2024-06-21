@@ -61,11 +61,11 @@ pub struct Args {
     #[arg(short, long)]
     verbose: bool,
 
-    /// sort the files ; if both move_ & scramble are provided scramble will be used first
+    /// sort the files ; if both move & scramble are provided scramble will be used first
     #[arg(short, long)]
     move_: bool,
 
-    /// scramble the files ; if both move_ & scramble are provided scramble will be used first
+    /// scramble the files ; if both move & scramble are provided scramble will be used first
     #[arg(short, long)]
     scramble: bool,
 
