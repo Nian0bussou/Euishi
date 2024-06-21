@@ -1,11 +1,9 @@
 #![allow(non_snake_case)]
-#![allow(unused)]
-#![allow(dead_code)]
 use crate::counting::get_process;
 use std::{
     collections::HashSet,
     env::{args, consts::OS},
-    fs,
+    fs, io, panic,
     path::{Path, PathBuf},
     u8,
 };
@@ -33,7 +31,6 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "error" => "❌",
         _ => panic!("invalid option ; got {}", dest_type),
     };
-    let tab = "\t";
     let path = Path::new(&source);
     let padded_dir_str = format!("{:<35}", path.display());
     println!(
@@ -111,7 +108,7 @@ pub fn g_Choices() -> (bool, bool, bool) {
     } else {
         haveCustomPath = false;
     }
-    (self.move_scramble, self.doRemoveTmps, self.haveCustomPath)
+    (move_scramble, doRemoveTmps, haveCustomPath)
 }
 
 pub fn get_folders(directory: &str) -> Vec<String> {
@@ -172,4 +169,51 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
         true => println!("{}", truemsg),
         false => println!("{}", falsems),
     }
+}
+
+/// remove dirs from [Vec<String>]
+///
+pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
+    //                           15x _
+    dirs.retain(|d| !d.contains("_______________"));
+
+    let mut removed: Vec<String> = Vec::new();
+    loop {
+        if dirs.is_empty() {
+            break;
+        };
+
+        // display vec
+        line();
+        let mut idx = 0;
+        for dir in &dirs {
+            println!("{:>14}: {}", idx, dir);
+            idx += 1;
+        }
+        line();
+
+        // get input
+        println!("Which one you want to remove ? (enter nothing to skip) : ");
+        let mut str = String::new();
+        _ = io::stdin().read_line(&mut str);
+
+        let str = str.trim();
+
+        // matching input & removing
+        let val = match str.parse::<usize>() {
+            Ok(val) => val,
+            Err(_) => break,
+        };
+
+        let a = dirs.remove(val);
+        removed.push(a);
+    }
+
+    line();
+    println!("removed:");
+    for r in removed {
+        println!("{}", r)
+    }
+    line();
+    dirs
 }

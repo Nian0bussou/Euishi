@@ -6,19 +6,27 @@ mod temps_file;
 mod tests;
 mod utils;
 use crate::utils::line;
-use std::{thread, time::Instant};
+use std::{io, thread, time::Instant};
 
-/*$$$$$$$                        /$$     /$$      /$$
-| $$__  $$                      | $$    | $$$    /$$$
-| $$  \ $$ /$$   /$$  /$$$$$$$ /$$$$$$  | $$$$  /$$$$  /$$$$$$  /$$    /$$  /$$$$$$
-| $$$$$$$/| $$  | $$ /$$_____/|_  $$_/  | $$ $$/$$ $$ /$$__  $$|  $$  /$$/ /$$__  $$
-| $$__  $$| $$  | $$|  $$$$$$   | $$    | $$  $$$| $$| $$  \ $$ \  $$/$$/ | $$$$$$$$
-| $$  \ $$| $$  | $$ \____  $$  | $$ /$$| $$\  $ | $$| $$  | $$  \  $$$/  | $$_____/
-| $$  | $$|  $$$$$$/ /$$$$$$$/  |  $$$$/| $$ \/  | $$|  $$$$$$/   \  $/   |  $$$$$$$
-|__/  |__/ \______/ |_______/    \___/  |__/     |__/ \______/     \_/     \______*/
+/*$$$$$$$                        /$$
+| $$__  $$                      | $$
+| $$  \ $$ /$$   /$$  /$$$$$$$ /$$$$$$
+| $$$$$$$/| $$  | $$ /$$_____/|_  $$_/
+| $$__  $$| $$  | $$|  $$$$$$   | $$
+| $$  \ $$| $$  | $$ \____  $$  | $$ /$$
+| $$  | $$|  $$$$$$/ /$$$$$$$/  |  $$$$/
+|__/  |__/ \______/ |_______/    \___/
+
+ /$$      /$$
+| $$$    /$$$
+| $$$$  /$$$$  /$$$$$$  /$$    /$$  /$$$$$$
+| $$ $$/$$ $$ /$$__  $$|  $$  /$$/ /$$__  $$
+| $$  $$$| $$| $$  \ $$ \  $$/$$/ | $$$$$$$$
+| $$\  $ | $$| $$  | $$  \  $$$/  | $$_____/
+| $$ \/  | $$|  $$$$$$/   \  $/   |  $$$$$$$
+|__/     |__/ \______/     \_/     \______*/
 
 fn main() {
-    let _t = TimingGuard::new();
     let (move_scramble, doRemoveTmps, haveCustomPath) = utils::g_Choices();
     let path: String = utils::get_path(haveCustomPath);
     let printmsg = true;
@@ -30,8 +38,25 @@ fn main() {
     utils::exit_msg();
 }
 
+#[allow(unreachable_code)]
 fn threads_sorting(path: String, choice: bool) {
-    let handles: Vec<_> = utils::get_folders(&path)
+    let dirs: Vec<String> = utils::get_folders(&path);
+    // removed dirs
+    let mut newdirs: Vec<String>;
+    loop {
+        newdirs = utils::removedDirs(dirs.clone());
+        println!("Are the dirs correct (Y/n)");
+        let mut str = String::new();
+        _ = io::stdin().read_line(&mut str);
+        let str = str.trim();
+        if str != "n" {
+            break;
+        }
+    }
+    let dirs = newdirs;
+
+    let _t = TimingGuard::new();
+    let handles: Vec<_> = dirs
         .into_iter()
         .map(|source| {
             thread::spawn(move || match choice {
@@ -40,8 +65,6 @@ fn threads_sorting(path: String, choice: bool) {
             })
         })
         .collect();
-
-    // wait for all threads to finish
     for handle in handles {
         handle.join().unwrap();
     }
@@ -62,6 +85,8 @@ fn threads_tmps(path: String, printmsg: bool) {
         .iter()
         .flat_map(|sub| utils::get_folders(sub))
         .collect();
+
+    let _t = TimingGuard::new();
     let handles: Vec<_> = vvtmp
         .into_iter()
         .map(|source: String| thread::spawn(move || temps_file::remove_tmps(&source, printmsg)))
