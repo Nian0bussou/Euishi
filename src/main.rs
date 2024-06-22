@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 mod counting;
+mod flags;
 mod movingfn;
 mod scrambling;
 mod temps_file;
@@ -8,19 +9,46 @@ mod threads;
 mod utils;
 
 use crate::utils::line;
-use ::clap::Parser;
+use clap::Parser;
+use flags::Args;
+use flags::Commands;
 use std::time::Instant;
 
-///
 /// main function
-fn main() {
+pub fn main() {
     let flags = Args::parse();
 
-    let path: String = utils::get_path(flags.path);
+    let mut moving: bool = false;
+    let mut scramble: bool = false;
+    let mut remove: bool = false;
+    let mut verboses: bool = false;
+    let mut flagpath: Option<String> = None;
 
-    threads::threads_sorting(path.clone(), flags.move_, flags.scramble);
-    if flags.removeTmps {
-        threads::threads_tmps(path, flags.verbose)
+    match &flags.command {
+        Some(Commands::Move_ { path }) => {
+            flagpath = path.clone();
+            moving = true
+        }
+        Some(Commands::Scramble { path }) => {
+            flagpath = path.clone();
+            scramble = true
+        }
+        Some(Commands::Remove { path, verbose }) => {
+            flagpath = path.clone();
+            remove = true;
+            verboses = *verbose;
+        }
+        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot) => (),
+        None => (),
+    }
+
+    let path: String = utils::get_path(flagpath);
+
+    if moving || scramble {
+        threads::threads_sorting(path.clone(), moving, scramble);
+    }
+    if remove {
+        threads::threads_tmps(path, verboses)
     }
     utils::exit_msg();
 }
@@ -42,38 +70,10 @@ impl Drop for TimingGuard {
         line();
     }
 }
-
 impl TimingGuard {
     fn new() -> Self {
         TimingGuard {
             start: Instant::now(),
         }
     }
-}
-
-#[derive(Parser, Debug)]
-pub struct Args {
-    // argfs take the first letter of the var name
-    // and long version is the var name
-
-    //
-    /// will print each file when using removeTmps
-    #[arg(short, long)]
-    verbose: bool,
-
-    /// sort the files ; if both move & scramble are provided scramble will be used first
-    #[arg(short, long)]
-    move_: bool,
-
-    /// scramble the files ; if both move & scramble are provided scramble will be used first
-    #[arg(short, long)]
-    scramble: bool,
-
-    /// remove tmp files
-    #[arg(short, long)]
-    removeTmps: bool,
-
-    /// provide the path
-    #[arg(short, long)]
-    path: Option<String>,
 }

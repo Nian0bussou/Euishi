@@ -2,6 +2,10 @@ use crate::{movingfn, scrambling, temps_file, utils, TimingGuard};
 use std::{io, thread};
 
 pub fn threads_sorting(path: String, movee: bool, scramble: bool) {
+    if !movee && !scramble {
+        return;
+    }
+
     let dirs: Vec<String> = utils::get_folders(&path);
     // removed dirs
     let mut newdirs: Vec<String>;

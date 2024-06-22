@@ -1,5 +1,4 @@
-
-rust_move: 
+build: 
 	cargo build 
 	cp ./target/debug/rustmove ./rustmove
 
