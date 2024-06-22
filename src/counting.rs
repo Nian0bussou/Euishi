@@ -8,6 +8,7 @@ lazy_static! {
     pub static ref PORTRAITS: Mutex<u128> = Mutex::new(0);
     pub static ref VIDEO: Mutex<u128> = Mutex::new(0);
 }
+
 pub fn pcount(field: &str) {
     match field {
         "proc" => {
@@ -33,16 +34,6 @@ pub fn pcount(field: &str) {
         _ => (),
     }
 }
-
-//    process: u128,
-//    succeed: u128,
-//    failed: u128,
-//    landscapes: u128,
-//    squares: u128,
-//    portraits: u128,
-//    video: u128,
-//    dir_created: u128,
-//    tmp_removed: u128,
 
 pub fn get_process() -> (u128, u128, u128, u128, u128) {
     let p = PROCESSED.lock().unwrap();
