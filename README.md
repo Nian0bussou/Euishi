@@ -38,7 +38,7 @@ git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 # Usage 
 
 - flags
-    - path ; provides the path to be used ; defaults to `/mnt/d/grapper/`
+    - path ; provides the path to be used ; defaults to `/mnt/d/grapper/` on linux & `D:/grapper` on windows
     - `move` ; will sort the files
     - scramble ; will scramble the files
     - removeTmps ; will use removetmps
