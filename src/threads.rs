@@ -1,7 +1,7 @@
-use crate::{movingfn, scrambling, temps_file, utils, DestroyerOfWorlds, TimingGuard};
+use crate::{movingfn, scrambling, temps_file, utils, CmdsOptions, TimingGuard};
 use std::{io, thread};
 
-pub fn threads_sorting(path: String, opt: DestroyerOfWorlds) {
+pub fn threads_sorting(path: String, opt: CmdsOptions) {
     let dirs: Vec<String> = utils::get_folders(&path);
     // removed dirs
     let mut newdirs: Vec<String>;
@@ -19,8 +19,8 @@ pub fn threads_sorting(path: String, opt: DestroyerOfWorlds) {
 
     let _t = TimingGuard::new();
 
-    use DestroyerOfWorlds::Move;
-    use DestroyerOfWorlds::Scramble;
+    use CmdsOptions::Move;
+    use CmdsOptions::Scramble;
 
     // + threads -->
     match opt {

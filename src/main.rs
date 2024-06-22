@@ -2,6 +2,7 @@
 mod counting;
 mod flags;
 mod movingfn;
+mod outfile;
 mod scrambling;
 mod temps_file;
 mod tests;
@@ -13,20 +14,14 @@ use flags::{Args, Commands};
 use std::time::Instant;
 use utils::line;
 
-//
-//
-//
-//
-//
-
 pub fn main() {
     let (opt, fpath, verboses) = handleFlags();
     let path: String = utils::get_path(fpath);
 
-    use DestroyerOfWorlds::Invalid;
-    use DestroyerOfWorlds::Move;
-    use DestroyerOfWorlds::Remove;
-    use DestroyerOfWorlds::Scramble;
+    use CmdsOptions::Invalid;
+    use CmdsOptions::Move;
+    use CmdsOptions::Remove;
+    use CmdsOptions::Scramble;
 
     match opt {
         Move => threads::threads_sorting(path.clone(), Move),
@@ -37,54 +32,27 @@ pub fn main() {
     utils::exit_msg();
 }
 
-//
-//
-//
-//
-//
-
-enum DestroyerOfWorlds {
+enum CmdsOptions {
     Move,
     Scramble,
     Remove,
     Invalid,
 }
 
-fn handleFlags() -> (DestroyerOfWorlds, Option<String>, bool) {
-    use DestroyerOfWorlds::Invalid;
-    use DestroyerOfWorlds::Move;
-    use DestroyerOfWorlds::Remove;
-    use DestroyerOfWorlds::Scramble;
+fn handleFlags() -> (CmdsOptions, Option<String>, bool) {
+    use CmdsOptions::Invalid;
+    use CmdsOptions::Move;
+    use CmdsOptions::Remove;
+    use CmdsOptions::Scramble;
 
     match &Args::parse().command {
-        Some(Commands::Move_ { path }) => {
-            //
-            (Move, path.clone(), false)
-        }
-        Some(Commands::Scramble { path }) => {
-            //
-            (Scramble, path.clone(), false)
-        }
-
-        Some(Commands::Remove { path, verbose }) => {
-            //
-            (Remove, path.clone(), *verbose)
-        }
-
-        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot) => {
-            //
-            (Invalid, None, false)
-        }
-
-        None => (Invalid, None, false),
+        Some(Commands::Move_ { path })/*______________________*/ => (Move/*_____*/, path.clone(), false),
+        Some(Commands::Scramble { path })/*___________________*/ => (Scramble/*_*/, path.clone(), false),
+        Some(Commands::Remove { path, verbose })/*____________*/ => (Remove/*___*/, path.clone(), *verbose),
+        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot)/*_*/ => (Invalid/*__*/, None/*____*/, false),
+        None /*_______________________________________________*/ => (Invalid/*__*/, None/*____*/, false),
     }
 }
-
-//
-//
-//
-//
-//
 
 struct TimingGuard {
     start: Instant,

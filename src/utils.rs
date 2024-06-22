@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 use crate::counting::get_process;
+use crate::outfile::makeOutput;
 use std::{
     collections::HashSet,
     env::consts::OS,
@@ -94,12 +95,8 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 pub fn exit_msg() {
     let (p, l, s, o, v) = get_process();
 
-    if p == 0 && l == 0 && s == 0 && o == 0 && v == 0 {
-        return;
-    }
-
-    println!(
-        "            \n\
+    let msg = format!(
+        "\
 _________________    \n\
 |=|             |    \n\
 | |Finished     |    \n\
@@ -113,9 +110,18 @@ _________________    \n\
 |   square      : {} \n\
 |   video       : {} \n\
 |---------------|    \n\
+                     \n\
 ",
         p, l, o, s, v
     );
+    if !(p == 0 && l == 0 && s == 0 && o == 0 && v == 0) {
+        println!("{}", msg);
+    }
+
+    match makeOutput(msg) {
+        Ok(_) => (),
+        Err(_) => println!("couldn't make output file"),
+    };
 }
 
 pub fn scramble_log(okerr: bool, f: PathBuf) {

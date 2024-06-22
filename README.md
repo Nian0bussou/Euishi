@@ -30,26 +30,16 @@ git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 ```
 
 ### using :
- - with `cargo run` in the same directory
- - with `cargo build`, then running the binary at `./target/debug/rustmove`
  - using `make` along the provided `Makefile` producing a binary at `./rustmove`
 
 
-# Usage 
-
-- flags
-    - path ; provides the path to be used ; defaults to `/mnt/d/grapper/` on linux & `D:/grapper` on windows
-    - `move` ; will sort the files
-    - scramble ; will scramble the files
-    - removeTmps ; will use removetmps
-    - verbose ; will print which file it is checking when using removeTmps
-
-if both `move` & scramble are flagged , scramble will run first
+# Usage : 
+ - use `./rustmove -h` for help
 
 
 ##### removetmps
 
-!! is a function that will
+is a function that will
 walk through the directories to remove 
 abandonned tmp files 
 (most likely to happen if this program is stop midway while sorting,
