@@ -1,11 +1,7 @@
-use crate::{movingfn, scrambling, temps_file, utils, TimingGuard};
+use crate::{movingfn, scrambling, temps_file, utils, DestroyerOfWorlds, TimingGuard};
 use std::{io, thread};
 
-pub fn threads_sorting(path: String, movee: bool, scramble: bool) {
-    if !movee && !scramble {
-        return;
-    }
-
+pub fn threads_sorting(path: String, opt: DestroyerOfWorlds) {
     let dirs: Vec<String> = utils::get_folders(&path);
     // removed dirs
     let mut newdirs: Vec<String>;
@@ -23,34 +19,38 @@ pub fn threads_sorting(path: String, movee: bool, scramble: bool) {
 
     let _t = TimingGuard::new();
 
-    // threads -->
-    //
+    use DestroyerOfWorlds::Move;
+    use DestroyerOfWorlds::Scramble;
 
-    if scramble {
-        let handles: Vec<_> = dirs
-            .clone()
-            .into_iter()
-            .map(|source| thread::spawn(move || scrambling::scramble(source)))
-            .collect();
-        for handle in handles {
-            handle.join().unwrap();
+    // + threads -->
+    match opt {
+        Scramble => {
+            let handles: Vec<_> = dirs
+                .clone()
+                .into_iter()
+                .map(|source| thread::spawn(move || scrambling::scramble(source)))
+                .collect();
+            for handle in handles {
+                handle.join().unwrap();
+            }
         }
-    }
-
-    if movee {
-        let handles: Vec<_> = dirs
-            .clone()
-            .into_iter()
-            .map(|source| {
-                thread::spawn(
-                    move || movingfn::move_stuff(source), //false => scrambling::scramble(source),
-                )
-            })
-            .collect();
-        for handle in handles {
-            handle.join().unwrap();
+        Move => {
+            let handles: Vec<_> = dirs
+                .clone()
+                .into_iter()
+                .map(|source| {
+                    thread::spawn(
+                        move || movingfn::move_stuff(source), //false => scrambling::scramble(source),
+                    )
+                })
+                .collect();
+            for handle in handles {
+                handle.join().unwrap();
+            }
         }
+        _ => (),
     }
+    // -
 }
 
 pub fn threads_tmps(path: String, printmsg: bool) {

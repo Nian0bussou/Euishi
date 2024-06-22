@@ -8,49 +8,76 @@ mod tests;
 mod threads;
 mod utils;
 
-use crate::utils::line;
 use clap::Parser;
-use flags::Args;
-use flags::Commands;
+use flags::{Args, Commands};
 use std::time::Instant;
+use utils::line;
 
-/// main function
+//
+//
+//
+//
+//
+
 pub fn main() {
-    let flags = Args::parse();
+    let (opt, fpath, verboses) = handleFlags();
+    let path: String = utils::get_path(fpath);
 
-    let mut moving: bool = false;
-    let mut scramble: bool = false;
-    let mut remove: bool = false;
-    let mut verboses: bool = false;
-    let mut flagpath: Option<String> = None;
+    use DestroyerOfWorlds::Invalid;
+    use DestroyerOfWorlds::Move;
+    use DestroyerOfWorlds::Remove;
+    use DestroyerOfWorlds::Scramble;
 
-    match &flags.command {
-        Some(Commands::Move_ { path }) => {
-            flagpath = path.clone();
-            moving = true
-        }
-        Some(Commands::Scramble { path }) => {
-            flagpath = path.clone();
-            scramble = true
-        }
-        Some(Commands::Remove { path, verbose }) => {
-            flagpath = path.clone();
-            remove = true;
-            verboses = *verbose;
-        }
-        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot) => (),
-        None => (),
-    }
-
-    let path: String = utils::get_path(flagpath);
-
-    if moving || scramble {
-        threads::threads_sorting(path.clone(), moving, scramble);
-    }
-    if remove {
-        threads::threads_tmps(path, verboses)
+    match opt {
+        Move => threads::threads_sorting(path.clone(), Move),
+        Scramble => threads::threads_sorting(path.clone(), Scramble),
+        Remove => threads::threads_tmps(path, verboses),
+        Invalid => (),
     }
     utils::exit_msg();
+}
+
+//
+//
+//
+//
+//
+
+enum DestroyerOfWorlds {
+    Move,
+    Scramble,
+    Remove,
+    Invalid,
+}
+
+fn handleFlags() -> (DestroyerOfWorlds, Option<String>, bool) {
+    use DestroyerOfWorlds::Invalid;
+    use DestroyerOfWorlds::Move;
+    use DestroyerOfWorlds::Remove;
+    use DestroyerOfWorlds::Scramble;
+
+    match &Args::parse().command {
+        Some(Commands::Move_ { path }) => {
+            //
+            (Move, path.clone(), false)
+        }
+        Some(Commands::Scramble { path }) => {
+            //
+            (Scramble, path.clone(), false)
+        }
+
+        Some(Commands::Remove { path, verbose }) => {
+            //
+            (Remove, path.clone(), *verbose)
+        }
+
+        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot) => {
+            //
+            (Invalid, None, false)
+        }
+
+        None => (Invalid, None, false),
+    }
 }
 
 //
