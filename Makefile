@@ -1,5 +1,6 @@
-build: 
-	cargo build 
+
+makeit:
+	cargo build
 	cp ./target/debug/rustmove ./rustmove
 
 test: 

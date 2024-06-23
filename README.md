@@ -18,9 +18,7 @@
 |__/     |__/ \______/     \_/     \_______/
 ```
 
-# RustMove
-
-Program to move images based on their dimensions and pixel count
+A program to move images based on their dimensions and pixel count
 
 # install
 
@@ -30,8 +28,12 @@ git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 ```
 
 ### using :
- - using `make` along the provided `Makefile` producing a binary at `./rustmove`
+ - using `make` along the provided `Makefile` 
+ make a binary at `./target/debug/rustmove` then copies it to `./rustmove`
 
+simply run the binary `./rustmove` afterward
+
+- using `cmake`
 
 # Usage : 
  - use `./rustmove -h` for help
