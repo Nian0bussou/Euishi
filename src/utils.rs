@@ -31,12 +31,12 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "error" => "❌",
         _ => panic!("invalid option ; got {}", dest_type),
     };
-    let path = Path::new(&source);
-    let padded_dir_str = format!("{:<35}", path.display());
-    println!(
-        "\t{}{}\t{} <|====|> {}{}",
-        color, special, padded_dir_str, dest_path, reset
-    )
+
+    _ = source; // avoid rust complaining the var is not used
+
+    //let path = Path::new(&source);
+    //let padded_dir_str = format!("{:<35}", path.display());
+    println!("\t{color}{special}\t{dest_path}{reset}")
 }
 
 pub fn errorPrint(err: String) {
@@ -62,10 +62,8 @@ pub fn get_path(givenpath: Option<String>) -> String {
             _ => panic!("cant get path"),
         },
     };
+    assert!(Path::new(&path).exists(), "directory not found");
 
-    if !(Path::new(&path).exists()) {
-        panic!("directory not found");
-    }
     path
 }
 
@@ -139,7 +137,7 @@ pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
     //                           15x _
     dirs.retain(|d| !d.contains("_______________"));
 
-    let mut removed: Vec<String> = Vec::new();
+    let mut added: Vec<String> = Vec::new();
     loop {
         if dirs.is_empty() {
             break;
@@ -155,7 +153,7 @@ pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
         line();
 
         // get input
-        println!("Which one you want to remove ? (enter nothing to skip) : ");
+        println!("Which one you want to added ? (enter nothing to skip) : ");
         let mut str = String::new();
         _ = io::stdin().read_line(&mut str);
 
@@ -166,16 +164,15 @@ pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
             Ok(val) => val,
             Err(_) => break,
         };
-
         let a = dirs.remove(val);
-        removed.push(a);
+        added.push(a);
     }
 
     line();
-    println!("removed:");
-    for r in removed {
-        println!("{}", r)
+    println!("added :");
+    for r in &added {
+        println!("\t{:<4}", r)
     }
     line();
-    dirs
+    added
 }

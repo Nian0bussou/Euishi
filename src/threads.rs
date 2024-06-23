@@ -3,7 +3,9 @@ use std::{io, thread};
 
 pub fn threads_sorting(path: String, opt: CmdsOptions) {
     let dirs: Vec<String> = utils::get_folders(&path);
-    // removed dirs
+
+    // FIXME: change to adding dirs instead
+    // + removed dirs
     let mut newdirs: Vec<String>;
     loop {
         newdirs = utils::removedDirs(dirs.clone());
@@ -16,6 +18,7 @@ pub fn threads_sorting(path: String, opt: CmdsOptions) {
         }
     }
     let dirs = newdirs;
+    // -
 
     let _t = TimingGuard::new();
 
