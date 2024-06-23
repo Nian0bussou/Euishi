@@ -2,13 +2,14 @@ _________________
 |=|             |    
 | |Finished     |    
 | |=============|    
-|   count       : 0 
+|   count       : 20130 
 |=|             |    
 | |Types        |    
 | |=============|    
-|   landscape   : 0 
-|   portrait    : 0 
-|   square      : 0 
-|   video       : 0 
+|   landscape   : 3038 
+|   portrait    : 16291 
+|   square      : 732 
+|   video       : 69 
 |---------------|    
+
 

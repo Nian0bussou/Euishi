@@ -118,9 +118,8 @@ _________________    \n\
         println!("{}", msg);
     }
 
-    match makeOutput(msg) {
-        Ok(_) => (),
-        Err(_) => println!("couldn't make output file"),
+    if let Err(_) = makeOutput(msg) {
+        println!("couldn't make output file")
     };
 }
 
