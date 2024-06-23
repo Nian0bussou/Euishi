@@ -27,19 +27,30 @@ cloning the repo :
 git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 ```
 
-### using :
- - using `make` along the provided `Makefile` 
- make a binary at `./target/debug/rustmove` then copies it to `./rustmove`
+### building :
+ - using `make` :
+    use `make` in the rustmove directory
 
-simply run the binary `./rustmove` afterward
+    `make` calls cargo build then moves `./target/debug/rustmove` to `./rustmove`
 
+
+(avoid using `cmake` bcs it will build each dependancy everytime unlike `make`)
 - using `cmake`
+
+    ```
+    mkdir build && cd build
+    cmake ..
+    cmake --build .
+    ```
+    will build a binary at `rustmove/build/rustmove`
+
+
 
 # Usage : 
  - use `./rustmove -h` for help
 
 
-##### removetmps
+### removetmps
 
 is a function that will
 walk through the directories to remove 
@@ -51,7 +62,7 @@ or if there was already tmp files made by other programs)
 
 ***could cause data loss***
 
-##### path
+### path
 if the path is specified, it will use it as the root dir (where all the subdirs are located)
 
 however **NO VERIFICATION IS DONE** 
@@ -62,7 +73,7 @@ requires the file to have width &
 height which excludes pretty much everything except images)
 make sure the path is correct
 
-#### Sort 
+### Sort 
 
 The program will sort the subdirectories in the path provided (in this case 'your-path')
 
@@ -107,7 +118,7 @@ subdir2/
 etc.
 
 
-# scramble
+### scramble
 
 The program will scramble the subdirectories in the path provided (in this case 'your-path')
 
