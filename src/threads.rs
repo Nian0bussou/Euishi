@@ -4,7 +4,6 @@ use std::{io, thread};
 pub fn threads_sorting(path: String, opt: CmdsOptions) {
     let dirs: Vec<String> = utils::get_folders(&path);
 
-    // FIXME: change to adding dirs instead
     // + removed dirs
     let mut newdirs: Vec<String>;
     loop {
@@ -27,25 +26,21 @@ pub fn threads_sorting(path: String, opt: CmdsOptions) {
 
     // + threads -->
     match opt {
-        Scramble => {
+        Move => {
             let handles: Vec<_> = dirs
                 .clone()
                 .into_iter()
-                .map(|source| thread::spawn(move || scrambling::scramble(source)))
+                .map(|source| thread::spawn(move || movingfn::move_stuff(source)))
                 .collect();
             for handle in handles {
                 handle.join().unwrap();
             }
         }
-        Move => {
+        Scramble => {
             let handles: Vec<_> = dirs
                 .clone()
                 .into_iter()
-                .map(|source| {
-                    thread::spawn(
-                        move || movingfn::move_stuff(source), //false => scrambling::scramble(source),
-                    )
-                })
+                .map(|source| thread::spawn(move || scrambling::scramble(source)))
                 .collect();
             for handle in handles {
                 handle.join().unwrap();
@@ -59,15 +54,13 @@ pub fn threads_sorting(path: String, opt: CmdsOptions) {
 pub fn threads_tmps(path: String, printmsg: bool) {
     println!("removing tmps files");
 
-    let tmp = utils::get_folders(&path);
-    let vtmp: Vec<_> = tmp
+    let vvtmp: Vec<String> = utils::get_folders(&path)
         .iter()
         .map(|t| {
             let s: String = format!("{}/", t);
             s
         })
-        .collect();
-    let vvtmp: Vec<String> = vtmp
+        .collect::<Vec<String>>()
         .iter()
         .flat_map(|sub| utils::get_folders(sub))
         .collect();

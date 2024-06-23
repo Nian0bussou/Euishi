@@ -12,24 +12,20 @@ mod utils;
 use clap::Parser;
 use flags::{Args, Commands};
 use std::time::Instant;
-use utils::line;
+use threads::{threads_sorting, threads_tmps};
+use utils::{exit_msg, get_path, line};
+use CmdsOptions::{Invalid, Move, Remove, Scramble};
 
 pub fn main() {
     let (opt, fpath, verboses) = handleFlags();
-    let path: String = utils::get_path(fpath);
-
-    use CmdsOptions::Invalid;
-    use CmdsOptions::Move;
-    use CmdsOptions::Remove;
-    use CmdsOptions::Scramble;
-
+    let path: String = get_path(fpath);
     match opt {
-        Move => threads::threads_sorting(path.clone(), Move),
-        Scramble => threads::threads_sorting(path.clone(), Scramble),
-        Remove => threads::threads_tmps(path, verboses),
+        Move => threads_sorting(path.clone(), Move),
+        Scramble => threads_sorting(path.clone(), Scramble),
+        Remove => threads_tmps(path, verboses),
         Invalid => (),
     }
-    utils::exit_msg();
+    exit_msg();
 }
 
 enum CmdsOptions {
@@ -40,11 +36,6 @@ enum CmdsOptions {
 }
 
 fn handleFlags() -> (CmdsOptions, Option<String>, bool) {
-    use CmdsOptions::Invalid;
-    use CmdsOptions::Move;
-    use CmdsOptions::Remove;
-    use CmdsOptions::Scramble;
-
     match &Args::parse().command {
         Some(Commands::Move_ { path })/*______________________*/ => (Move/*_____*/, path.clone(), false),
         Some(Commands::Scramble { path })/*___________________*/ => (Scramble/*_*/, path.clone(), false),
