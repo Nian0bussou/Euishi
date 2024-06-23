@@ -1,5 +1,4 @@
-
-makeit:
+build:
 	cargo build
 	mv ./target/debug/rustmove ./rustmove
 

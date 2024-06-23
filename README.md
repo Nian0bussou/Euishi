@@ -28,22 +28,17 @@ git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
 ```
 
 ### building :
+--- 
+
+###### Linux : 
  - using `make` :
     use `make` in the rustmove directory
 
     `make` calls cargo build then moves `./target/debug/rustmove` to `./rustmove`
 
-
-(avoid using `cmake` bcs it will build each dependancy everytime unlike `make`)
-- using `cmake`
-
-    ```
-    mkdir build && cd build
-    cmake ..
-    cmake --build .
-    ```
-    will build a binary at `rustmove/build/rustmove`
-
+###### Other OS : 
+I have not tested on other OS than Linux, proceed at your own risk
+ - can compile with `cargo build`, binary will be at `./target/debug/rustmove.exe` by default
 
 
 # Usage : 
