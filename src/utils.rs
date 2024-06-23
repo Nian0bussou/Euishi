@@ -36,6 +36,10 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
 
     //let path = Path::new(&source);
     //let padded_dir_str = format!("{:<35}", path.display());
+    //println!(
+    //        "\t{}{}\t{} <|====|> {}{}",
+    //        color, special, padded_dir_str, dest_path, reset
+    //    )
     println!("\t{color}{special}\t{dest_path}{reset}")
 }
 
