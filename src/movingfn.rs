@@ -4,6 +4,7 @@ use crate::{
 };
 use image::image_dimensions;
 use std::{
+    ffi::OsString,
     fs,
     path::{Path, PathBuf},
 };
@@ -101,7 +102,15 @@ fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &
         "error" => (),
         _ => panic!("invalid entry match format"),
     };
-    let file_name = file_path.file_name().unwrap();
+
+    let file_name = OsString::from(
+        file_path
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .replace(" ", "-"),
+    );
+
     let new_file = destination.join(file_name);
     wrap_move(file_path, new_file, color, format, source)
 }

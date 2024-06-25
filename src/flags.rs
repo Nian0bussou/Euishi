@@ -13,6 +13,10 @@ pub enum Commands {
         /// provide the path
         #[arg(short, long)]
         path: Option<String>,
+
+        /// specify if you want to choose which dir to act on
+        #[arg(short, long)]
+        chooseDirs: bool,
     },
 
     /// scramble the files ; if both move & scramble are provided scramble will be used first
@@ -20,6 +24,10 @@ pub enum Commands {
         /// provide the path
         #[arg(short, long)]
         path: Option<String>,
+
+        /// specify if you want to choose which dir to act on
+        #[arg(short, long)]
+        chooseDirs: bool,
     },
 
     /// remove tmp files

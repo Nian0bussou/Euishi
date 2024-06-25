@@ -10,6 +10,8 @@ use std::{
 //use term_size::dimensions;
 
 pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
+    _ = source; // avoid rust complaining the value is not used
+
     let reset = "\x1b[0m";
     let color = match color_name {
         "red" => "\x1b[31m",
@@ -21,7 +23,7 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "grey" => "\x1b[37m",
         "yellow" => "\x1b[33m",
         "white" => "\x1b[0m",
-        _ => panic!("invalid option ; got {}", color_name),
+        _ => panic!("invalid color option ; got {}", color_name),
     };
     let special = match dest_type {
         "land" => "━",
@@ -29,10 +31,8 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         "portrait" => "┃",
         "video" => "▶",
         "error" => "❌",
-        _ => panic!("invalid option ; got {}", dest_type),
+        _ => panic!("invalid speci option ; got {}", dest_type),
     };
-
-    _ = source; // avoid rust complaining the var is not used
 
     //let path = Path::new(&source);
     //let padded_dir_str = format!("{:<35}", path.display());
@@ -135,10 +135,7 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
     }
 }
 
-/// remove dirs from [Vec<String>]
-///
-pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
-    //                           15x _
+pub fn addingDirs(mut dirs: Vec<String>) -> Vec<String> {
     dirs.retain(|d| !d.contains("_______________"));
 
     let mut added: Vec<String> = Vec::new();
@@ -163,7 +160,7 @@ pub fn removedDirs(mut dirs: Vec<String>) -> Vec<String> {
 
         let str = str.trim();
 
-        // matching input & removing
+        // matching input & adding
         let val = match str.parse::<usize>() {
             Ok(val) => val,
             Err(_) => break,

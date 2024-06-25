@@ -43,3 +43,18 @@ pub fn get_process() -> (u128, u128, u128, u128, u128) {
     let v = VIDEO.lock().unwrap();
     (*p, *l, *s, *o, *v)
 }
+
+#[test]
+fn proc() {
+    _ = get_process();
+}
+
+#[test]
+fn tpcount() {
+    _ = pcount("proc");
+    _ = pcount("land");
+    _ = pcount("port");
+    _ = pcount("squa");
+    _ = pcount("vide");
+    _ = pcount("auishi");
+}

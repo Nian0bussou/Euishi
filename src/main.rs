@@ -9,46 +9,63 @@ mod tests;
 mod threads;
 mod utils;
 
-use clap::Parser;
-use flags::{Args, Commands};
-use std::time::Instant;
-use threads::{threads_sorting, threads_tmps};
-use utils::{exit_msg, get_path, line};
-use CmdsOptions::{Invalid, Move, Remove, Scramble};
+use {
+    clap::Parser,
+    flags::{Args, Commands},
+    std::time::Instant,
+    threads::{threads_sorting, threads_tmps},
+    utils::{exit_msg, get_path, line},
+};
 
+/// main fn
 pub fn main() {
-    let (opt, fpath, verboses) = handleFlags();
-    let path: String = get_path(fpath);
-    match opt {
-        Move => threads_sorting(path.clone(), Move),
-        Scramble => threads_sorting(path.clone(), Scramble),
-        Remove => threads_tmps(path, verboses),
-        Invalid => (),
-    }
+    let (opt, fpath) = handleFlags();
+    matchingOptions(opt, get_path(fpath));
     exit_msg();
 }
 
-enum CmdsOptions {
-    Move,
-    Scramble,
-    Remove,
-    Invalid,
+//
+
+fn matchingOptions(opt: CmdsOptions, path: String) {
+    use CmdsOptions::{Invalid, Move, Remove, Scramble};
+    match opt {
+        Move { chooseDirs } => threads_sorting(path.clone(), Move { chooseDirs }),
+        Scramble { chooseDirs } => threads_sorting(path.clone(), Scramble { chooseDirs }),
+        Remove { verbose } => threads_tmps(path, verbose),
+        Invalid => (),
+    }
 }
 
-fn handleFlags() -> (CmdsOptions, Option<String>, bool) {
+fn handleFlags() -> (CmdsOptions, Option<String>) {
+    use CmdsOptions::{Invalid, Move, Remove, Scramble};
     match &Args::parse().command {
-        Some(Commands::Move_ { path })/*______________________*/ => (Move/*_____*/, path.clone(), false),
-        Some(Commands::Scramble { path })/*___________________*/ => (Scramble/*_*/, path.clone(), false),
-        Some(Commands::Remove { path, verbose })/*____________*/ => (Remove/*___*/, path.clone(), *verbose),
-        Some(Commands::Skibiditoiletrizzinohiofrfrbrainrot)/*_*/ => (Invalid/*__*/, None/*____*/, false),
-        None /*_______________________________________________*/ => (Invalid/*__*/, None/*____*/, false),
+        Some(Commands::Move_ { path, chooseDirs }) => (
+            Move {
+                chooseDirs: *chooseDirs,
+            },
+            path.clone(),
+        ),
+        Some(Commands::Scramble { path, chooseDirs }) => (
+            Scramble {
+                chooseDirs: *chooseDirs,
+            },
+            path.clone(),
+        ),
+        Some(Commands::Remove { path, verbose }) => (Remove { verbose: *verbose }, path.clone()),
+        _ => (Invalid, None),
     }
+}
+
+enum CmdsOptions {
+    Move { chooseDirs: bool },
+    Scramble { chooseDirs: bool },
+    Remove { verbose: bool },
+    Invalid,
 }
 
 struct TimingGuard {
     start: Instant,
 }
-
 impl Drop for TimingGuard {
     fn drop(&mut self) {
         let duration = self.start.elapsed();
@@ -62,4 +79,9 @@ impl TimingGuard {
             start: Instant::now(),
         }
     }
+}
+
+#[test]
+fn optionsflags() {
+    _ = handleFlags();
 }

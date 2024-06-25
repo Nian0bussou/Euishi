@@ -1,7 +1,8 @@
 #[test]
-fn parseInput1() {
-    _ = match "1".parse::<usize>() {
-        Ok(val) => println!("valid {}", val),
-        Err(_) => panic!("err : input : 1"),
-    };
+fn parseInput() {
+    let input = "0";
+    match input.parse::<usize>() {
+        Ok(val) => println!("valid {val} : received : {input}"),
+        Err(_) => panic!("err : input : {input}"),
+    }
 }
