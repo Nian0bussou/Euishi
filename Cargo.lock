@@ -3,17 +3,6 @@
 version = 3
 
 [[package]]
-name = "Euishi-えういし"
-version = "2.0.0"
-dependencies = [
- "chrono",
- "clap",
- "image",
- "lazy_static",
- "walkdir",
-]
-
-[[package]]
 name = "adler"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -345,6 +334,17 @@ name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
+
+[[package]]
+name = "euishi-えういし"
+version = "2.0.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "image",
+ "lazy_static",
+ "walkdir",
+]
 
 [[package]]
 name = "exr"
