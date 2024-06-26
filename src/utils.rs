@@ -9,9 +9,7 @@ use std::{
 };
 //use term_size::dimensions;
 
-pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &str) {
-    _ = source; // avoid rust complaining the value is not used
-
+pub fn file_output(dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
     let color = match color_name {
         "red" => "\x1b[31m",
@@ -34,12 +32,6 @@ pub fn file_output(source: &str, dest_path: &str, color_name: &str, dest_type: &
         _ => panic!("invalid speci option ; got {}", dest_type),
     };
 
-    //let path = Path::new(&source);
-    //let padded_dir_str = format!("{:<35}", path.display());
-    //println!(
-    //        "\t{}{}\t{} <|====|> {}{}",
-    //        color, special, padded_dir_str, dest_path, reset
-    //    )
     println!("\t{color}{special}\t{dest_path}{reset}")
 }
 

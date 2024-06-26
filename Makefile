@@ -1,6 +1,6 @@
 build:
 	cargo build
-	mv ./target/debug/euishi-えういし ./euishi-えういし
+	mv ./target/debug/euishi ./euishi
 
 test: 
 	cargo test

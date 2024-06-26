@@ -41,7 +41,7 @@ pub fn move_stuff(dir: String) {
                         if path.is_dir() {
                             continue;
                         }
-                        move_file(path, &destinations, &dir)
+                        move_file(path, &destinations)
                     }
                     Err(err) => errorPrint(err.to_string()),
                 }
@@ -51,7 +51,7 @@ pub fn move_stuff(dir: String) {
     }
 }
 
-fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
+fn move_file(file: PathBuf, dests: &Vec<&PathBuf>) {
     let dwall = dests[0];
     let dother = dests[1];
     let dsquare = dests[2];
@@ -63,7 +63,7 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
 
     let extension = file.extension().unwrap();
     if extension == "mp4" {
-        wrap_rename(file, dvideo, "yellow", "video", source);
+        wrap_rename(file, dvideo, "yellow", "video");
         return;
     }
     let (width, height) = match image_dimensions(&file) {
@@ -74,26 +74,26 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, source: &str) {
 
     if width >= 1080 && height >= 1080 {
         if aspect_ratio > 1.0 {
-            wrap_rename(file, dwall, "red", "land", source);
+            wrap_rename(file, dwall, "red", "land");
         } else if aspect_ratio < 1.0 {
-            wrap_rename(file, dother, "green", "portrait", source)
+            wrap_rename(file, dother, "green", "portrait")
         } else if aspect_ratio == 1.0 {
-            wrap_rename(file, dsquare, "blue", "square", source)
+            wrap_rename(file, dsquare, "blue", "square")
         }
     } else if width != 1 && height != 1 {
         if aspect_ratio > 1.0 {
-            wrap_rename(file, dblandscape, "cyan", "land", source);
+            wrap_rename(file, dblandscape, "cyan", "land");
         } else if aspect_ratio < 1.0 {
-            wrap_rename(file, dbportrait, "purple", "portrait", source)
+            wrap_rename(file, dbportrait, "purple", "portrait")
         } else if aspect_ratio == 1.0 {
-            wrap_rename(file, dbsquare, "magenta", "square", source)
+            wrap_rename(file, dbsquare, "magenta", "square")
         }
     } else {
-        wrap_rename(file, derrors, "red", "error", source)
+        wrap_rename(file, derrors, "red", "error")
     }
 }
 
-fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &str, source: &str) {
+fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &str) {
     match format {
         "land" => pcount("land"),
         "portrait" => pcount("port"),
@@ -112,17 +112,17 @@ fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &
     );
 
     let new_file = destination.join(file_name);
-    wrap_move(file_path, new_file, color, format, source)
+    wrap_move(file_path, new_file, color, format)
 }
 
-fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str, source: &str) {
+fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str) {
     let tmp = new_path.parent().unwrap().to_owned();
     let parent_new = tmp.to_str().unwrap();
     pcount("proc");
     match fs::rename(file_path, new_path) {
         Ok(_) => {
             pcount("succ");
-            utils::file_output(source, parent_new, color, format)
+            utils::file_output(parent_new, color, format)
         }
         Err(err) => {
             pcount("fail");

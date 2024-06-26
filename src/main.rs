@@ -8,14 +8,6 @@ mod temps_file;
 mod tests;
 mod threads;
 mod utils;
-
-/// main fn
-pub fn main() {
-    let (opt, fpath) = handleFlags();
-    matchingOptions(opt, get_path(fpath));
-    exit_msg();
-}
-
 use {
     clap::Parser,
     flags::{Args, Commands},
@@ -24,19 +16,28 @@ use {
     utils::{exit_msg, get_path, line},
 };
 //
+/// main fn
+pub fn main() {
+    let (opt, fpath) = handleFlags();
 
-fn matchingOptions(opt: CmdsOptions, path: String) {
-    use CmdsOptions::{Invalid, Move, Remove, Scramble};
+    use CmdsOptions::Invalid;
+    use CmdsOptions::Move;
+    use CmdsOptions::Remove;
+    use CmdsOptions::Scramble;
+
     match opt {
-        Move { chooseDirs } => threads_sorting(path.clone(), Move { chooseDirs }),
-        Scramble { chooseDirs } => threads_sorting(path.clone(), Scramble { chooseDirs }),
-        Remove { verbose } => threads_tmps(path, verbose),
+        Move { chooseDirs } /*-----*/=> threads_sorting(get_path(fpath), Move { chooseDirs }),
+        Scramble { chooseDirs } /*-*/=> threads_sorting(get_path(fpath), Scramble { chooseDirs }),
+        Remove { verbose } /*------*/=> threads_tmps(get_path(fpath), verbose),
         Invalid => (),
     }
+
+    exit_msg();
 }
 
 fn handleFlags() -> (CmdsOptions, Option<String>) {
     use CmdsOptions::{Invalid, Move, Remove, Scramble};
+
     match &Args::parse().command {
         Some(Commands::Move_ { path, chooseDirs }) => (
             Move {
@@ -51,6 +52,7 @@ fn handleFlags() -> (CmdsOptions, Option<String>) {
             path.clone(),
         ),
         Some(Commands::Remove { path, verbose }) => (Remove { verbose: *verbose }, path.clone()),
+        //
         _ => (Invalid, None),
     }
 }
@@ -65,18 +67,18 @@ enum CmdsOptions {
 struct TimingGuard {
     start: Instant,
 }
-impl Drop for TimingGuard {
-    fn drop(&mut self) {
-        let duration = self.start.elapsed();
-        println!("time taken: {:?}", duration);
-        line();
-    }
-}
 impl TimingGuard {
     fn new() -> Self {
         TimingGuard {
             start: Instant::now(),
         }
+    }
+}
+impl Drop for TimingGuard {
+    fn drop(&mut self) {
+        let duration = self.start.elapsed();
+        line();
+        println!("time taken: {:?}", duration);
     }
 }
 
