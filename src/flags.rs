@@ -39,7 +39,4 @@ pub enum Commands {
         #[arg(short, long)]
         verbose: bool,
     },
-
-    /// self explanatory
-    Skibiditoiletrizzinohiofrfrbrainrot,
 }

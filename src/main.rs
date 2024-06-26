@@ -9,14 +9,6 @@ mod tests;
 mod threads;
 mod utils;
 
-use {
-    clap::Parser,
-    flags::{Args, Commands},
-    std::time::Instant,
-    threads::{threads_sorting, threads_tmps},
-    utils::{exit_msg, get_path, line},
-};
-
 /// main fn
 pub fn main() {
     let (opt, fpath) = handleFlags();
@@ -24,6 +16,13 @@ pub fn main() {
     exit_msg();
 }
 
+use {
+    clap::Parser,
+    flags::{Args, Commands},
+    std::time::Instant,
+    threads::{threads_sorting, threads_tmps},
+    utils::{exit_msg, get_path, line},
+};
 //
 
 fn matchingOptions(opt: CmdsOptions, path: String) {
