@@ -4,7 +4,7 @@ A program to move images based on their dimensions and pixel count
 # install
 cloning the repo : 
 ```
-git clone https://github.com/Nian0bussou/rustmove.git && cd rustmove
+git clone https://github.com/Nian0bussou/Euishi.git && Euishi
 ```
 
 ### building :
