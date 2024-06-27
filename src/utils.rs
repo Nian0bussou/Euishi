@@ -1,13 +1,13 @@
-use crate::counting::get_process;
-use crate::outfile::make_output;
-use serde::Deserialize;
-use serde_json::from_reader;
+use crate::{
+    //
+    counting::get_process,
+    getjson::g_json_attrs,
+    outfile::make_output,
+};
 use std::{
     collections::HashSet,
     env::consts::OS,
-    fs::{self, File},
-    io::BufReader,
-    panic,
+    fs, panic,
     path::{Path, PathBuf},
 };
 //use term_size::dimensions;
@@ -76,6 +76,7 @@ pub fn get_folders(directory: &str) -> Vec<String> {
                     if let Some(name_str) = name.to_str() {
                         if path.is_dir() {
                             folders.insert(name_str.to_string()); // nesting hell 🏳️‍⚧️
+                                                                  // 🏳️<200d>⚧️
                         }
                     }
                 }
@@ -91,6 +92,10 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 
 pub fn exit_msg() {
     let (p, l, s, o, v) = get_process();
+
+    if p == 0 && l == 0 && s == 0 && o == 0 && v == 0 {
+        return;
+    }
 
     let msg = format!(
         "\
@@ -111,12 +116,11 @@ _________________    \n\
 ",
         p, l, o, s, v
     );
-    if !(p == 0 && l == 0 && s == 0 && o == 0 && v == 0) {
-        println!("{}", msg);
-    }
+
+    println!("{}", msg);
 
     if let Err(_) = make_output(msg) {
-        println!("couldn't make output file")
+        eprintln!("couldn't make output file")
     };
 }
 
@@ -129,18 +133,10 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
         false => println!("{}", falsems),
     }
 }
-
-#[derive(Deserialize)]
-struct Paths {
-    paths: Vec<String>,
-}
-
 // TODO replacing to json config
 pub fn adding_dirs(path_json: String) -> std::io::Result<Vec<String>> {
-    let file = File::open(path_json)?;
-    let reader = BufReader::new(file);
-    let ps: Paths = from_reader(reader)?;
-    let paths = ps.paths;
+    let config = g_json_attrs(path_json);
+    let paths = config.paths;
 
     Ok(paths)
 }

@@ -3,11 +3,12 @@ use {
     flags::{Args, Commands},
     std::time::Instant,
     threads::{threads_sorting, threads_tmps},
-    utils::{exit_msg, get_path, line},
+    utils::{get_path, line},
 };
 
 mod counting;
 mod flags;
+mod getjson;
 mod movingfn;
 mod outfile;
 mod scrambling;
@@ -32,8 +33,6 @@ pub fn main() {
         Remove { verbose } /*-------*/=> threads_tmps(get_path(fpath), verbose),
         Invalid => (),
     }
-
-    exit_msg();
 }
 
 fn handle_flags() -> (CmdsOptions, Option<String>) {

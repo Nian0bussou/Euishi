@@ -1,4 +1,8 @@
-use crate::{movingfn, scrambling, temps_file, utils, CmdsOptions, TimingGuard};
+use crate::{
+    movingfn, scrambling, temps_file,
+    utils::{self, exit_msg},
+    CmdsOptions, TimingGuard,
+};
 use core::panic;
 use std::thread;
 
@@ -47,6 +51,8 @@ pub fn threads_sorting(path: String, opt: CmdsOptions) {
     for handle in handles {
         handle.join().unwrap();
     }
+
+    exit_msg();
 }
 
 pub fn threads_tmps(path: String, printmsg: bool) {
