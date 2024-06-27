@@ -40,25 +40,26 @@ Commands:
 
 
 Options (only in move & scramble):
-  -p, --path <PATH>                provide the path
 
-  -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a conf.json
-
-  -h, --help                       Print help
+    -p, --path <PATH>                provide the path
+    
+    -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a conf.json
+    
+    -h, --help                       Print help
 
 "-p" (--path)
 is not necessary to be provided using -c (--choose-dirs) when using `move`
 
 Options of remove:
 
-  -p, --path <PATH>  provide the path
-
-  -v, --verbose
-
-  -h, --help         Print help
+    -p, --path <PATH>  provide the path
+    
+    -v, --verbose
+    
+    -h, --help         Print help
 
  
- a `json` file can be used to specify which dirs to sort using this pattern :
+a `json` file can be used to specify which dirs to sort using this pattern :
 
 ```json
 {
