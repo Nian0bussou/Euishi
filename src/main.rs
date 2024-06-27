@@ -1,10 +1,10 @@
-use {
-    clap::Parser,
-    flags::{Args, Commands},
-    std::time::Instant,
-    threads::{threads_sorting, threads_tmps},
-    utils::{get_path, line},
-};
+use clap::Parser;
+use flags::{Args, Commands};
+use std::time::Instant;
+use threads::threads_sorting;
+use threads::threads_tmps;
+use utils::get_path;
+use utils::line;
 
 mod counting;
 mod flags;
