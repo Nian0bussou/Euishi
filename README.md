@@ -28,14 +28,30 @@ You can change the name it will compile to in the `Cargo.toml` file
 # Usage : 
  - use `./rustmove -h` for help
 
-sort the files ; if both move & scramble are provided scramble will be used first
+Commands: 
+    move      sort the files ; if both move & scramble are provided scramble will be used first
+    scramble  scramble the files ; if both move & scramble are provided scramble will be used first
+    remove    remove tmp files
+    help      Print this message or the help of the given subcommand(s)
 
-Usage: euishi move [OPTIONS]
 
-Options:
+Options (only in move & scramble):
   -p, --path <PATH>                provide the path
+
   -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a conf.json
+
   -h, --help                       Print help
+
+"-p" (--path)
+is not necessary to be provided using -c (--choose-dirs) when using `move`
+
+Options of remove:
+
+  -p, --path <PATH>  provide the path
+
+  -v, --verbose
+
+  -h, --help         Print help
 
  
  a `json` file can be used to specify which dirs to sort using this pattern :
