@@ -1,6 +1,6 @@
 use crate::{
     //
-    counting::get_process,
+    counting::g_count,
     getjson::g_json_attrs,
     outfile::make_output,
 };
@@ -91,7 +91,7 @@ pub fn get_folders(directory: &str) -> Vec<String> {
 }
 
 pub fn exit_msg() {
-    let (p, l, s, o, v) = get_process();
+    let (p, l, s, o, v) = g_count();
 
     if p == 0 && l == 0 && s == 0 && o == 0 && v == 0 {
         return;

@@ -35,7 +35,7 @@ pub fn pcount(field: &str) {
     }
 }
 
-pub fn get_process() -> (u128, u128, u128, u128, u128) {
+pub fn g_count() -> (u128, u128, u128, u128, u128) {
     let p = PROCESSED.lock().unwrap();
     let l = LANDSCAPES.lock().unwrap();
     let s = SQUARES.lock().unwrap();
@@ -46,7 +46,7 @@ pub fn get_process() -> (u128, u128, u128, u128, u128) {
 
 #[test]
 fn proc() {
-    _ = get_process();
+    _ = g_count();
 }
 
 #[test]

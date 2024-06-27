@@ -17,8 +17,6 @@ mod tests;
 mod threads;
 mod utils;
 
-//
-/// main fn
 pub fn main() {
     let (opt, fpath) = handle_flags();
 
