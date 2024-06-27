@@ -1,36 +1,27 @@
 use crate::{movingfn, scrambling, temps_file, utils, CmdsOptions, TimingGuard};
 use core::panic;
-use std::{io, thread};
+use std::thread;
 
 pub fn threads_sorting(path: String, opt: CmdsOptions) {
     use CmdsOptions::Move;
     use CmdsOptions::Scramble;
 
-    let dirs: Vec<String> = utils::get_folders(&path);
+    let mut dirs: Vec<String> = utils::get_folders(&path);
+    dirs.retain(|d| !d.contains("_______________"));
+    let dirs = dirs;
 
-    let choose = match opt {
-        Move { chooseDirs } => chooseDirs,
-        Scramble { chooseDirs } => chooseDirs,
-        _ => false,
+    let choose = match opt.clone() {
+        Move { choose_dirs } => choose_dirs,
+        Scramble { choose_dirs } => choose_dirs,
+        _ => None,
     };
 
-    let dirs = if choose {
-        // + addind dirs
-        let mut newdirs: Vec<String>;
-        loop {
-            newdirs = utils::addingDirs(dirs.clone());
-            println!("Are the dirs correct (Y/n)");
-            let mut str = String::new();
-            _ = io::stdin().read_line(&mut str);
-            let str = str.trim();
-            if str != "n" {
-                break;
-            }
-        }
-        newdirs
-        // -
-    } else {
-        dirs
+    let dirs = match choose {
+        Some(choose) => match utils::adding_dirs(choose) {
+            Ok(e) => e,
+            Err(_) => dirs,
+        },
+        None => dirs,
     };
 
     let _t = TimingGuard::new();

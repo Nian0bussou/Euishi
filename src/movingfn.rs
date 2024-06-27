@@ -1,6 +1,6 @@
 use crate::{
     counting::pcount,
-    utils::{self, errorPrint},
+    utils::{self, error_print},
 };
 use image::image_dimensions;
 use std::{
@@ -43,11 +43,11 @@ pub fn move_stuff(dir: String) {
                         }
                         move_file(path, &destinations)
                     }
-                    Err(err) => errorPrint(err.to_string()),
+                    Err(err) => error_print(err.to_string()),
                 }
             }
         }
-        Err(err) => errorPrint(err.to_string()),
+        Err(err) => error_print(err.to_string()),
     }
 }
 
@@ -126,7 +126,7 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str) {
         }
         Err(err) => {
             pcount("fail");
-            utils::errorPrint(err.to_string());
+            utils::error_print(err.to_string());
         }
     }
 }

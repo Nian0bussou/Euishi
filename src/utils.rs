@@ -1,10 +1,13 @@
-#![allow(non_snake_case)]
 use crate::counting::get_process;
-use crate::outfile::makeOutput;
+use crate::outfile::make_output;
+use serde::Deserialize;
+use serde_json::from_reader;
 use std::{
     collections::HashSet,
     env::consts::OS,
-    fs, io, panic,
+    fs::{self, File},
+    io::BufReader,
+    panic,
     path::{Path, PathBuf},
 };
 //use term_size::dimensions;
@@ -35,7 +38,7 @@ pub fn file_output(dest_path: &str, color_name: &str, dest_type: &str) {
     println!("\t{color}{special}\t{dest_path}{reset}")
 }
 
-pub fn errorPrint(err: String) {
+pub fn error_print(err: String) {
     line();
     let red = "\x1b[31m";
     let white = "\x1b[0m";
@@ -112,7 +115,7 @@ _________________    \n\
         println!("{}", msg);
     }
 
-    if let Err(_) = makeOutput(msg) {
+    if let Err(_) = make_output(msg) {
         println!("couldn't make output file")
     };
 }
@@ -127,45 +130,17 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
     }
 }
 
-pub fn addingDirs(mut dirs: Vec<String>) -> Vec<String> {
-    dirs.retain(|d| !d.contains("_______________"));
+#[derive(Deserialize)]
+struct Paths {
+    paths: Vec<String>,
+}
 
-    let mut added: Vec<String> = Vec::new();
-    loop {
-        if dirs.is_empty() {
-            break;
-        };
+// TODO replacing to json config
+pub fn adding_dirs(path_json: String) -> std::io::Result<Vec<String>> {
+    let file = File::open(path_json)?;
+    let reader = BufReader::new(file);
+    let ps: Paths = from_reader(reader)?;
+    let paths = ps.paths;
 
-        // display vec
-        line();
-        let mut idx = 0;
-        for dir in &dirs {
-            println!("{:>14}: {}", idx, dir);
-            idx += 1;
-        }
-        line();
-
-        // get input
-        println!("Which one you want to added ? (enter nothing to skip) : ");
-        let mut str = String::new();
-        _ = io::stdin().read_line(&mut str);
-
-        let str = str.trim();
-
-        // matching input & adding
-        let val = match str.parse::<usize>() {
-            Ok(val) => val,
-            Err(_) => break,
-        };
-        let a = dirs.remove(val);
-        added.push(a);
-    }
-
-    line();
-    println!("added :");
-    for r in &added {
-        println!("\t{:<4}", r)
-    }
-    line();
-    added
+    Ok(paths)
 }

@@ -2,7 +2,7 @@ use chrono::prelude::*;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 
-pub fn makeOutput(msg: String) -> std::io::Result<()> {
+pub fn make_output(msg: String) -> std::io::Result<()> {
     let mut file = OpenOptions::new()
         .append(true)
         .create(true)
@@ -19,10 +19,7 @@ pub fn makeOutput(msg: String) -> std::io::Result<()> {
     Ok(())
 }
 
-fn file_writer<T>(f: &mut File, msg: T) -> std::io::Result<()>
-where
-    T: AsRef<str>,
-{
+fn file_writer<T: AsRef<str>>(f: &mut File, msg: T) -> std::io::Result<()> {
     f.write_all(msg.as_ref().as_bytes())?;
     f.flush()?;
     Ok(())
@@ -31,13 +28,15 @@ where
 //
 
 #[test]
-fn testFile() -> std::io::Result<()> {
+fn test_file() -> std::io::Result<()> {
     let mut file = OpenOptions::new()
         .append(true)
         .create(true)
         .open("./testFile.txt")?;
 
     file_writer(&mut file, "This is a test\n")?;
+
+    std::fs::remove_file("./testFile.txt")?;
 
     Ok(())
 }

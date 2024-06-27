@@ -1,4 +1,11 @@
-#![allow(non_snake_case)]
+use {
+    clap::Parser,
+    flags::{Args, Commands},
+    std::time::Instant,
+    threads::{threads_sorting, threads_tmps},
+    utils::{exit_msg, get_path, line},
+};
+
 mod counting;
 mod flags;
 mod movingfn;
@@ -8,17 +15,11 @@ mod temps_file;
 mod tests;
 mod threads;
 mod utils;
-use {
-    clap::Parser,
-    flags::{Args, Commands},
-    std::time::Instant,
-    threads::{threads_sorting, threads_tmps},
-    utils::{exit_msg, get_path, line},
-};
+
 //
 /// main fn
 pub fn main() {
-    let (opt, fpath) = handleFlags();
+    let (opt, fpath) = handle_flags();
 
     use CmdsOptions::Invalid;
     use CmdsOptions::Move;
@@ -26,28 +27,28 @@ pub fn main() {
     use CmdsOptions::Scramble;
 
     match opt {
-        Move { chooseDirs } /*-----*/=> threads_sorting(get_path(fpath), Move { chooseDirs }),
-        Scramble { chooseDirs } /*-*/=> threads_sorting(get_path(fpath), Scramble { chooseDirs }),
-        Remove { verbose } /*------*/=> threads_tmps(get_path(fpath), verbose),
+        Move { choose_dirs } /*-----*/=> threads_sorting(get_path(fpath), Move { choose_dirs }),
+        Scramble { choose_dirs } /*-*/=> threads_sorting(get_path(fpath), Scramble { choose_dirs }),
+        Remove { verbose } /*-------*/=> threads_tmps(get_path(fpath), verbose),
         Invalid => (),
     }
 
     exit_msg();
 }
 
-fn handleFlags() -> (CmdsOptions, Option<String>) {
+fn handle_flags() -> (CmdsOptions, Option<String>) {
     use CmdsOptions::{Invalid, Move, Remove, Scramble};
 
     match &Args::parse().command {
-        Some(Commands::Move_ { path, chooseDirs }) => (
+        Some(Commands::Move_ { path, choose_dirs }) => (
             Move {
-                chooseDirs: *chooseDirs,
+                choose_dirs: choose_dirs.clone(),
             },
             path.clone(),
         ),
-        Some(Commands::Scramble { path, chooseDirs }) => (
+        Some(Commands::Scramble { path, choose_dirs }) => (
             Scramble {
-                chooseDirs: *chooseDirs,
+                choose_dirs: choose_dirs.clone(),
             },
             path.clone(),
         ),
@@ -57,9 +58,10 @@ fn handleFlags() -> (CmdsOptions, Option<String>) {
     }
 }
 
+#[derive(Clone)]
 enum CmdsOptions {
-    Move { chooseDirs: bool },
-    Scramble { chooseDirs: bool },
+    Move { choose_dirs: Option<String> },
+    Scramble { choose_dirs: Option<String> },
     Remove { verbose: bool },
     Invalid,
 }
@@ -84,5 +86,5 @@ impl Drop for TimingGuard {
 
 #[test]
 fn optionsflags() {
-    _ = handleFlags();
+    _ = handle_flags();
 }

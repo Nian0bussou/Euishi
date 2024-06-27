@@ -14,9 +14,9 @@ pub enum Commands {
         #[arg(short, long)]
         path: Option<String>,
 
-        /// specify if you want to choose which dir to act on
+        /// specify which dirs to act upon using a conf.json
         #[arg(short, long)]
-        chooseDirs: bool,
+        choose_dirs: Option<String>,
     },
 
     /// scramble the files ; if both move & scramble are provided scramble will be used first
@@ -25,9 +25,9 @@ pub enum Commands {
         #[arg(short, long)]
         path: Option<String>,
 
-        /// specify if you want to choose which dir to act on
+        /// specify which dirs to act upon using a conf.json
         #[arg(short, long)]
-        chooseDirs: bool,
+        choose_dirs: Option<String>,
     },
 
     /// remove tmp files

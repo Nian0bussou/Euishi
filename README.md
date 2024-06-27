@@ -18,7 +18,7 @@ git clone https://github.com/Nian0bussou/Euishi.git && Euishi
 
 ###### Other OS : 
 I have not tested on other OS than Linux, proceed at your own risk
- - can compile with `cargo build`, binary will be at `./target/debug/rustmove.exe` by default
+ - can compile with `cargo build`, binary will be in `./target/debug/` by default
 
 
 # Usage : 
