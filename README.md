@@ -13,16 +13,42 @@ git clone https://github.com/Nian0bussou/Euishi.git && Euishi
 ###### Linux : 
  - using `make` :
     use `make` in the rustmove directory
-
     `make` calls cargo build then moves `./target/debug/rustmove` to `./rustmove`
+ - using `cargo`:
+    using `cargo build`, binary will be in `./target/debug/`
+    using `cargo build --release`, binary will be in `./target/release/`
 
 ###### Other OS : 
-I have not tested on other OS than Linux, proceed at your own risk
+I have not tested on OS other than Linux, proceed at your own risk
  - can compile with `cargo build`, binary will be in `./target/debug/` by default
 
+###### Compile to other name;
+You can change the name it will compile to in the `Cargo.toml` file
 
 # Usage : 
  - use `./rustmove -h` for help
+
+sort the files ; if both move & scramble are provided scramble will be used first
+
+Usage: euishi move [OPTIONS]
+
+Options:
+  -p, --path <PATH>                provide the path
+  -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a conf.json
+  -h, --help                       Print help
+
+ 
+ a `json` file can be used to specify which dirs to sort using this pattern :
+
+```json
+{
+  "paths": [
+    "/your/path/1"
+    "/your/path/2"
+    "/your/path/3"
+  ]
+}
+```
 
 
 ### removetmps
@@ -130,5 +156,6 @@ subdir1/
 
 subdir2/
 ...
+
 
 
