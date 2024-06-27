@@ -29,9 +29,13 @@ You can change the name it will compile to in the `Cargo.toml` file
  - use `./rustmove -h` for help
 
 Commands: 
-    move      sort the files ; if both move & scramble are provided scramble will be used first
-    scramble  scramble the files ; if both move & scramble are provided scramble will be used first
+
+    move      sort the files 
+
+    scramble  scramble the files 
+
     remove    remove tmp files
+
     help      Print this message or the help of the given subcommand(s)
 
 
