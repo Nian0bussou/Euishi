@@ -48,7 +48,7 @@ Options (only in move & scramble):
     -h, --help                       Print help
 
 "-p" (--path)
-is not necessary to be provided using -c (--choose-dirs) when using `move`
+is not necessary to be provided when using -c (--choose-dirs) 
 
 Options of remove:
 
