@@ -11,18 +11,10 @@ git clone https://github.com/Nian0bussou/Euishi.git && cd Euishi
 
 ### building :
 --- 
-
-###### Linux : 
- - using `make` :
-    use `make` in the rustmove directory
-    `make` calls cargo build then moves `./target/debug/rustmove` to `./rustmove`
- - using `cargo`:
-    using `cargo build`, binary will be in `./target/debug/`
-    using `cargo build --release`, binary will be in `./target/release/`
-
-###### Other OS : 
-I have not tested on OS other than Linux, proceed at your own risk
- - can compile with `cargo build`, binary will be in `./target/debug/` by default
+```
+cargo build --release
+```
+binaray will be at `./target/release/euishi`
 
 ###### Compile to other name;
 You can change the name it will compile to in the `Cargo.toml` file
