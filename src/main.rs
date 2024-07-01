@@ -1,8 +1,8 @@
 use clap::Parser;
 use flags::{Args, Commands};
 use std::time::Instant;
-use threads::threads_sorting;
-use threads::threads_tmps;
+use threads::t_sorting;
+use threads::t_tmps;
 use utils::get_path;
 use utils::line;
 
@@ -17,8 +17,6 @@ mod tests;
 mod threads;
 mod utils;
 
-// EUUUUUUUUUUUUUUUUUUUUUUUUUUUUIIIIIIIIIIIIIIIIIIIIIIIIIISHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIII
-
 pub fn main() {
     let (opt, fpath) = handle_flags();
 
@@ -28,9 +26,9 @@ pub fn main() {
     use CmdsOptions::Scramble;
 
     match opt {
-        Move { choose_dirs } /*-----*/=> threads_sorting(get_path(fpath), Move { choose_dirs }),
-        Scramble { choose_dirs } /*-*/=> threads_sorting(get_path(fpath), Scramble { choose_dirs }),
-        Remove { verbose } /*-------*/=> threads_tmps(get_path(fpath), verbose),
+        Move { choose_dirs } => t_sorting(get_path(fpath), Move { choose_dirs }),
+        Scramble { choose_dirs } => t_sorting(get_path(fpath), Scramble { choose_dirs }),
+        Remove { verbose } => t_tmps(get_path(fpath), verbose),
         Invalid => (),
     }
 }

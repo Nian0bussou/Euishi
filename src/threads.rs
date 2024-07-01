@@ -6,7 +6,7 @@ use crate::{
 use core::panic;
 use std::thread;
 
-pub fn threads_sorting(path: String, opt: CmdsOptions) {
+pub fn t_sorting(path: String, opt: CmdsOptions) {
     use CmdsOptions::Move;
     use CmdsOptions::Scramble;
 
@@ -55,7 +55,7 @@ pub fn threads_sorting(path: String, opt: CmdsOptions) {
     exit_msg();
 }
 
-pub fn threads_tmps(path: String, printmsg: bool) {
+pub fn t_tmps(path: String, printmsg: bool) {
     println!("removing tmps files");
 
     let tmpd: Vec<String> = utils::get_folders(&path)

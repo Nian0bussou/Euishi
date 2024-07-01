@@ -1,6 +1,8 @@
 use chrono::prelude::*;
+use core::panic;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
+use std::process::Command;
 
 pub fn make_output(msg: String) -> std::io::Result<()> {
     let mut file = OpenOptions::new()
@@ -8,10 +10,11 @@ pub fn make_output(msg: String) -> std::io::Result<()> {
         .create(true)
         .open("./output_euishi.txt")?;
 
-    file_writer(
+    write_file(
         &mut file,
         format!(
-            "Time : {}\n{}",
+            "User : {}\nTime : {}\n{} ",
+            g_user(),
             Local::now().format("%Y-%m-%d %H:%M:%S"),
             msg
         ),
@@ -19,13 +22,23 @@ pub fn make_output(msg: String) -> std::io::Result<()> {
     Ok(())
 }
 
-fn file_writer<T: AsRef<str>>(f: &mut File, msg: T) -> std::io::Result<()> {
+fn write_file<T: AsRef<str>>(f: &mut File, msg: T) -> std::io::Result<()> {
     f.write_all(msg.as_ref().as_bytes())?;
     f.flush()?;
     Ok(())
 }
 
-//
+fn g_user() -> String {
+    let output = Command::new("whoami")
+        .output()
+        .expect("Failed to execute command");
+
+    let s = output.stdout;
+    match String::from_utf8(s) {
+        Ok(s) => s,
+        _ => panic!(),
+    }
+}
 
 #[test]
 fn test_file() -> std::io::Result<()> {
@@ -33,10 +46,7 @@ fn test_file() -> std::io::Result<()> {
         .append(true)
         .create(true)
         .open("./testFile.txt")?;
-
-    file_writer(&mut file, "This is a test\n")?;
-
+    write_file(&mut file, "This is a test\n")?;
     std::fs::remove_file("./testFile.txt")?;
-
     Ok(())
 }
