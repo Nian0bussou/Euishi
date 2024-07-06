@@ -20,7 +20,7 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
         _ => None,
     };
 
-    let dirs = match choose {
+    let dirs = match choose.clone() {
         Some(choose) => match utils::adding_dirs(choose) {
             Ok(e) => e,
             Err(_) => dirs,
@@ -38,7 +38,12 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
         Move { .. } => dirs
             .clone()
             .into_iter()
-            .map(|source| spawn(move || move_stuff(source)))
+            .map(|source| {
+                spawn({
+                    let value = choose.clone();
+                    move || move_stuff(source, value)
+                })
+            })
             .collect(),
         Scramble { .. } => dirs
             .clone()

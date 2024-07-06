@@ -1,7 +1,8 @@
 # Euishi - えういし
 A program to move images based on their dimensions and pixel count
 
-this is a fucking hot mess, proceed at your own risks
+this is a fucking hot mess, func names makes no sense whatsoever, proceed at your own risks
+
 
 # install
 cloning the repo : 
@@ -20,7 +21,7 @@ binaray will be at `./target/release/euishi`
 You can change the name it will compile to in the `Cargo.toml` file
 
 # Usage : 
- - use `./rustmove -h` for help
+ - use `./euishi -h` for help
 
 Commands: 
 
@@ -37,10 +38,21 @@ Options (only in move & scramble):
 
     -p, --path <PATH>                provide the path
     
-    -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a conf.json
+    -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a json file
     
     -h, --help                       Print help
 
+a `json` file can be used to specify which dirs to sort using this pattern :
+
+```json
+{
+  "paths": [
+    "/your/path/1"
+    "/your/path/2"
+    "/your/path/3"
+  ]
+}
+```
 "-p" (--path)
 is not necessary to be provided when using -c (--choose-dirs) 
 
@@ -53,14 +65,4 @@ Options of remove:
     -h, --help         Print help
 
  
-a `json` file can be used to specify which dirs to sort using this pattern :
 
-```json
-{
-  "paths": [
-    "/your/path/1"
-    "/your/path/2"
-    "/your/path/3"
-  ]
-}
-```

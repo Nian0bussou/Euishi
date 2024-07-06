@@ -5,6 +5,8 @@ use serde_json::from_reader;
 
 #[derive(Deserialize)]
 pub struct Config {
+    pub minheight: u32,
+    pub minwidth: u32,
     pub paths: Vec<String>,
 }
 

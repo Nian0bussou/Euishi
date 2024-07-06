@@ -7,6 +7,7 @@ build:
 
 rel: 
 	cargo build --release
+	cp ./target/release/euishi ./euishi
 
 test: 
 	cargo test

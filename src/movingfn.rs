@@ -1,5 +1,6 @@
 use crate::{
     counting::pcount,
+    getjson::g_json_attrs,
     utils::{self, error_print},
 };
 use image::image_dimensions;
@@ -9,7 +10,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-pub fn move_stuff(dir: String) {
+pub fn move_stuff(dir: String, choose: Option<String>) {
     let dwall = Path::new(&dir).join("wall");
     let dother = Path::new(&dir).join("other");
     let dsquare = Path::new(&dir).join("square");
@@ -41,7 +42,7 @@ pub fn move_stuff(dir: String) {
                         if path.is_dir() {
                             continue;
                         }
-                        move_file(path, &destinations)
+                        move_file(path, &destinations, choose.clone())
                     }
                     Err(err) => error_print(err.to_string()),
                 }
@@ -51,7 +52,17 @@ pub fn move_stuff(dir: String) {
     }
 }
 
-fn move_file(file: PathBuf, dests: &Vec<&PathBuf>) {
+fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, choose: Option<String>) {
+    // get max width/height via conf.json
+
+    let (min_w, min_h) = match choose {
+        Some(path) => {
+            let c = g_json_attrs(path);
+            (c.minwidth, c.minheight)
+        }
+        None => (1080, 1080),
+    };
+
     let dwall = dests[0];
     let dother = dests[1];
     let dsquare = dests[2];
@@ -72,7 +83,7 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>) {
     };
     let aspect_ratio = width as f32 / height as f32;
 
-    if width >= 1080 && height >= 1080 {
+    if width >= min_w && height >= min_h {
         if aspect_ratio > 1.0 {
             wrap_rename(file, dwall, "red", "land");
         } else if aspect_ratio < 1.0 {
