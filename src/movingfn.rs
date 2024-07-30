@@ -20,6 +20,7 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
     let dbadqualityportrait = Path::new(&dbadquality).join("p");
     let dvideo = Path::new(&dir).join("video");
     let derrors = Path::new(&dir).join("errors");
+
     let destinations: Vec<&PathBuf> = vec![
         &dwall,
         &dother,
@@ -31,8 +32,13 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
         &dvideo,
         &derrors,
     ];
-    make_folders(&destinations);
-
+    // make folders
+    for d in &destinations {
+        match fs::create_dir(d) {
+            Ok(_) => pcount("dir"),
+            _ => (),
+        };
+    }
     match fs::read_dir(&dir) {
         Ok(entries) => {
             for f in entries {
@@ -123,14 +129,11 @@ fn wrap_rename(file_path: PathBuf, destination: &PathBuf, color: &str, format: &
     );
 
     let new_file = destination.join(file_name);
-    wrap_move(file_path, new_file, color, format)
-}
-
-fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str) {
-    let tmp = new_path.parent().unwrap().to_owned();
+    let tmp = new_file.parent().unwrap().to_owned();
     let parent_new = tmp.to_str().unwrap();
+
     pcount("proc");
-    match fs::rename(file_path, new_path) {
+    match fs::rename(file_path, new_file) {
         Ok(_) => {
             pcount("succ");
             utils::file_output(parent_new, color, format)
@@ -139,14 +142,5 @@ fn wrap_move(file_path: PathBuf, new_path: PathBuf, color: &str, format: &str) {
             pcount("fail");
             utils::error_print(err.to_string());
         }
-    }
-}
-
-fn make_folders(dests: &Vec<&PathBuf>) {
-    for d in dests {
-        match fs::create_dir(d) {
-            Ok(_) => pcount("dir"),
-            _ => (),
-        };
     }
 }

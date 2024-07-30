@@ -1,4 +1,5 @@
 .PHONY: build rel test rt
+
 build:
 	rm -f ./euishi_build
 	rm -f ./euishi
@@ -16,3 +17,10 @@ test:
 # rerun test
 rt:
 	cargo test --bin euishi
+
+# windows
+w:
+	cargo build
+	.\target\debug\euishi.exe
+
+
