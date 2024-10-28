@@ -33,7 +33,7 @@ Commands:
 
     scramble  scramble the files 
 
-    remove    remove tmp files
+    remove    remove `.tmp` files
 
     help      Print this message or the help of the given subcommand(s)
 
