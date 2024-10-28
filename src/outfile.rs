@@ -1,6 +1,6 @@
 use chrono::prelude::*;
-use core::panic;
-use std::fs::{File, OpenOptions};
+use std::fs::File;
+use std::fs::OpenOptions;
 use std::io::Write;
 use std::process::Command;
 
@@ -29,14 +29,17 @@ fn write_file<T: AsRef<str>>(f: &mut File, msg: T) -> std::io::Result<()> {
 }
 
 fn g_user() -> String {
-    let output = Command::new("whoami")
-        .output()
-        .expect("Failed to execute command");
+    let output = Command::new("whoami").output();
 
-    let s = output.stdout;
-    match String::from_utf8(s) {
-        Ok(s) => s,
-        _ => panic!(),
+    if let Ok(x) = output {
+        let s = x.stdout;
+        if let Ok(s) = String::from_utf8(s) {
+            s
+        } else {
+            "----------".to_owned()
+        }
+    } else {
+        "----------".to_owned()
     }
 }
 

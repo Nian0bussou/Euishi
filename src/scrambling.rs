@@ -1,5 +1,7 @@
-use crate::{counting::pcount, utils};
-use std::{fs, path::Path};
+use crate::counting::pcount;
+use crate::utils;
+use std::fs;
+use std::path::Path;
 use walkdir::WalkDir;
 
 pub fn scramble(path: String) {

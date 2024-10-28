@@ -1,16 +1,13 @@
-use crate::{
-    //
-    counting::g_count,
-    getjson::g_json_attrs,
-    outfile::make_output,
-};
-use std::{
-    collections::HashSet,
-    env::consts::OS,
-    fs, panic,
-    path::{Path, PathBuf},
-};
-//use term_size::dimensions;
+use crate::counting::g_count;
+use crate::getjson::g_json_attrs;
+use crate::outfile::make_output;
+use std::collections::HashSet;
+use std::env::consts::OS;
+use std::fs;
+use std::panic;
+use std::path::Path;
+use std::path::PathBuf;
+use std::process::exit;
 
 pub fn file_output(dest_path: &str, color_name: &str, dest_type: &str) {
     let reset = "\x1b[0m";
@@ -34,7 +31,6 @@ pub fn file_output(dest_path: &str, color_name: &str, dest_type: &str) {
         "error" => "❌",
         _ => panic!("invalid speci option ; got {}", dest_type),
     };
-
     println!("\t{color}{special}\t{dest_path}{reset}")
 }
 
@@ -58,11 +54,13 @@ pub fn get_path(givenpath: Option<String>) -> String {
         None => match OS {
             "windows" => "D:/grapper/".to_owned(),
             "linux" => "/mnt/d/grapper/".to_owned(),
-            _ => panic!("cant get path"),
+            _ => {
+                eprintln!("cant get path");
+                exit(1)
+            }
         },
     };
     assert!(Path::new(&path).exists(), "directory not found");
-
     path
 }
 

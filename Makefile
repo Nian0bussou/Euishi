@@ -20,7 +20,7 @@ rt:
 
 # windows
 w:
-	cargo build
-	.\target\debug\euishi.exe
+	cargo build --release
+	.\target\release\euishi.exe
 
 

@@ -1,8 +1,10 @@
-use crate::{
-    movingfn, scrambling, temps_file,
-    utils::{self, exit_msg},
-    CmdsOptions, TimingGuard,
-};
+use crate::movingfn;
+use crate::scrambling;
+use crate::temps_file;
+use crate::utils;
+use crate::utils::exit_msg;
+use crate::CmdsOptions;
+use crate::TimingGuard;
 use core::panic;
 use std::thread;
 

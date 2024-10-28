@@ -20,16 +20,25 @@ mod utils;
 pub fn main() {
     let (opt, fpath) = handle_flags();
 
-    use CmdsOptions::Invalid;
-    use CmdsOptions::Move;
-    use CmdsOptions::Remove;
-    use CmdsOptions::Scramble;
+    let gfpaht = get_path(fpath);
 
     match opt {
-        Move { choose_dirs } => t_sorting(get_path(fpath), Move { choose_dirs }),
-        Scramble { choose_dirs } => t_sorting(get_path(fpath), Scramble { choose_dirs }),
-        Remove { verbose } => t_tmps(get_path(fpath), verbose),
-        Invalid => (),
+        CmdsOptions::Move { choose_dirs } => {
+            //
+            t_sorting(gfpaht, CmdsOptions::Move { choose_dirs })
+        }
+        CmdsOptions::Scramble { choose_dirs } => {
+            //
+            t_sorting(gfpaht, CmdsOptions::Scramble { choose_dirs })
+        }
+        CmdsOptions::Remove { verbose } => {
+            //
+            t_tmps(gfpaht, verbose)
+        }
+        CmdsOptions::Invalid => {
+            //
+            ()
+        }
     }
 }
 
