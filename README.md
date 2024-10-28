@@ -3,6 +3,10 @@ A program to move images based on their dimensions and pixel count
 
 this is a fucking hot mess, func names makes no sense whatsoever, proceed at your own risks
 
+this is intended mainly for personal use, if it doesn't work as you expect it to, i don't fucking care.
+
+# Makefile
+provides 'shortcuts' to commands i frequently do
 
 # install
 cloning the repo : 
