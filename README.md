@@ -6,17 +6,11 @@ this is a fucking hot mess, func names makes no sense whatsoever, proceed at you
 this is intended mainly for personal use, if it doesn't work as you expect it to, i don't fucking care.
 
 # Makefile
-provides 'shortcuts' to commands i frequently do
-
-# install
-cloning the repo :
-```
-git clone https://github.com/Nian0bussou/Euishi.git && cd Euishi
-```
+provides commands i frequently do
 
 # Usage :
 
-## Commands:
+#### Commands:
 
     move      sort the files
 
@@ -27,13 +21,13 @@ git clone https://github.com/Nian0bussou/Euishi.git && cd Euishi
     help      Print this message or the help of the given subcommand(s)
 
 
-## Options of `move` & `scramble`:
+#### Options of `move` & `scramble`:
 
     -p, --path <PATH>                provide the path
 
     -h, --help                       Print help
 
-## Options of `remove`:
+#### Options of `remove`:
 
     -p, --path <PATH>  provide the path
 
