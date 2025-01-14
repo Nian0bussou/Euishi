@@ -12,11 +12,11 @@ provides 'shortcuts' to commands i frequently do
 cloning the repo :
 ```
 git clone https://github.com/Nian0bussou/Euishi.git && cd Euishi
+```
 
 # Usage :
- - use `./euishi -h` for help
 
-Commands:
+## Commands:
 
     move      sort the files
 
@@ -27,27 +27,13 @@ Commands:
     help      Print this message or the help of the given subcommand(s)
 
 
-Options (only in move & scramble):
+## Options of `move` & `scramble`:
 
     -p, --path <PATH>                provide the path
 
     -h, --help                       Print help
 
-a `json` file can be used to specify which dirs to sort using this pattern :
-
-```json
-{
-  "paths": [
-    "/your/path/1"
-    "/your/path/2"
-    "/your/path/3"
-  ]
-}
-```
-"-p" (--path)
-is not necessary to be provided when using -c (--choose-dirs)
-
-Options of remove:
+## Options of `remove`:
 
     -p, --path <PATH>  provide the path
 
