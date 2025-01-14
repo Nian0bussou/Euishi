@@ -8,7 +8,6 @@ use utils::line;
 
 mod counting;
 mod flags;
-mod getjson;
 mod movingfn;
 mod outfile;
 mod scrambling;

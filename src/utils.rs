@@ -1,5 +1,4 @@
 use crate::counting::g_count;
-use crate::getjson::g_json_attrs;
 use crate::outfile::make_output;
 use std::collections::HashSet;
 use std::env::consts::OS;
@@ -130,10 +129,4 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
         true => println!("{}", truemsg),
         false => println!("{}", falsems),
     }
-}
-pub fn adding_dirs(path_json: String) -> std::io::Result<Vec<String>> {
-    let config = g_json_attrs(path_json);
-    let paths = config.paths;
-
-    Ok(paths)
 }

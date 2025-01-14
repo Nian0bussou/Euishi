@@ -1,6 +1,5 @@
 use crate::{
     counting::pcount,
-    getjson::g_json_attrs,
     utils::{self, error_print},
 };
 use image::image_dimensions;
