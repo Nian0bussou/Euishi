@@ -14,18 +14,11 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
     use CmdsOptions::Move;
     use CmdsOptions::Scramble;
 
-    let choose = match opt.clone() {
-        Move { choose_dirs } => choose_dirs,
-        Scramble { choose_dirs } => choose_dirs,
-        _ => None,
-    };
-
     let _t = TimingGuard::new();
 
     match opt {
         Move { .. } => {
-            let value = choose.clone();
-            move_stuff(path, value)
+            move_stuff(path)
         }
         Scramble { .. } => scramble(path),
         _ => panic!("not supposed to get here"),

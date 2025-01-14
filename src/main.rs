@@ -23,19 +23,10 @@ pub fn main() {
     let gfpaht = get_path(fpath);
 
     match opt {
-        CmdsOptions::Move { choose_dirs } => {
-            //
-            t_sorting(gfpaht, CmdsOptions::Move { choose_dirs })
-        }
-        CmdsOptions::Scramble { choose_dirs } => {
-            //
-            t_sorting(gfpaht, CmdsOptions::Scramble { choose_dirs })
-        }
-        CmdsOptions::Remove { verbose } => {
-            //
-            t_tmps(gfpaht, verbose)
-        }
-        CmdsOptions::Invalid => { }
+        CmdsOptions::Move => t_sorting(gfpaht, CmdsOptions::Move),
+        CmdsOptions::Scramble => t_sorting(gfpaht, CmdsOptions::Scramble),
+        CmdsOptions::Remove { verbose } => t_tmps(gfpaht, verbose),
+        CmdsOptions::Invalid => {}
     }
 }
 
@@ -43,28 +34,17 @@ fn handle_flags() -> (CmdsOptions, Option<String>) {
     use CmdsOptions::{Invalid, Move, Remove, Scramble};
 
     match &Args::parse().command {
-        Some(Commands::Move_ { path, choose_dirs }) => (
-            Move {
-                choose_dirs: choose_dirs.clone(),
-            },
-            path.clone(),
-        ),
-        Some(Commands::Scramble { path, choose_dirs }) => (
-            Scramble {
-                choose_dirs: choose_dirs.clone(),
-            },
-            path.clone(),
-        ),
+        Some(Commands::Move_ { path }) => (Move, path.clone()),
+        Some(Commands::Scramble { path }) => (Scramble, path.clone()),
         Some(Commands::Remove { path, verbose }) => (Remove { verbose: *verbose }, path.clone()),
-        //
         _ => (Invalid, None),
     }
 }
 
 #[derive(Clone)]
 enum CmdsOptions {
-    Move { choose_dirs: Option<String> },
-    Scramble { choose_dirs: Option<String> },
+    Move,
+    Scramble,
     Remove { verbose: bool },
     Invalid,
 }

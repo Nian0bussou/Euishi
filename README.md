@@ -9,29 +9,18 @@ this is intended mainly for personal use, if it doesn't work as you expect it to
 provides 'shortcuts' to commands i frequently do
 
 # install
-cloning the repo : 
+cloning the repo :
 ```
 git clone https://github.com/Nian0bussou/Euishi.git && cd Euishi
-```
 
-### building :
---- 
-```
-cargo build --release
-```
-binaray will be at `./target/release/euishi`
-
-###### Compile to other name;
-You can change the name it will compile to in the `Cargo.toml` file
-
-# Usage : 
+# Usage :
  - use `./euishi -h` for help
 
-Commands: 
+Commands:
 
-    move      sort the files 
+    move      sort the files
 
-    scramble  scramble the files 
+    scramble  scramble the files
 
     remove    remove `.tmp` files
 
@@ -41,9 +30,7 @@ Commands:
 Options (only in move & scramble):
 
     -p, --path <PATH>                provide the path
-    
-    -c, --choose-dirs <CHOOSE_DIRS>  specify which dirs to act upon using a json file
-    
+
     -h, --help                       Print help
 
 a `json` file can be used to specify which dirs to sort using this pattern :
@@ -58,15 +45,15 @@ a `json` file can be used to specify which dirs to sort using this pattern :
 }
 ```
 "-p" (--path)
-is not necessary to be provided when using -c (--choose-dirs) 
+is not necessary to be provided when using -c (--choose-dirs)
 
 Options of remove:
 
     -p, --path <PATH>  provide the path
-    
+
     -v, --verbose
-    
+
     -h, --help         Print help
 
- 
+
 

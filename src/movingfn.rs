@@ -61,7 +61,7 @@ impl Directories {
     }
 }
 
-pub fn move_stuff(dir: String, choose: Option<String>) {
+pub fn move_stuff(dir: String) {
     let directories = Directories::new(&dir);
 
     match fs::read_dir(&dir) {
@@ -73,7 +73,7 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
                         if path.is_dir() {
                             continue;
                         }
-                        move_file(path, &directories, choose.clone())
+                        move_file(path, &directories)
                     }
                     Err(err) => error_print(err.to_string()),
                 }
@@ -83,16 +83,8 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
     }
 }
 
-fn move_file(file: PathBuf, dests: &Directories, choose: Option<String>) {
-    // get max width/height via conf.json
-
-    let (min_w, min_h) = match choose {
-        Some(path) => {
-            let c = g_json_attrs(path);
-            (c.minwidth, c.minheight)
-        }
-        None => (1080, 1080),
-    };
+fn move_file(file: PathBuf, dests: &Directories) {
+    let (min_w, min_h) = (1080, 1080);
 
     let dwall = &dests.wall;
     let dother = &dests.other;
