@@ -10,36 +10,60 @@ use std::{
     path::{Path, PathBuf},
 };
 
-pub fn move_stuff(dir: String, choose: Option<String>) {
-    // making the directories used
-    let dwall = Path::new(&dir).join("wall");
-    let dother = Path::new(&dir).join("other");
-    let dsquare = Path::new(&dir).join("square");
-    let dbadquality = Path::new(&dir).join("bad_quality");
-    let dbadqualitylandscape = Path::new(&dbadquality).join("l");
-    let dbadqualitysquare = Path::new(&dbadquality).join("s");
-    let dbadqualityportrait = Path::new(&dbadquality).join("p");
-    let dvideo = Path::new(&dir).join("video");
-    let derrors = Path::new(&dir).join("errors");
+struct Directories {
+    pub wall: PathBuf,
+    pub other: PathBuf,
+    pub square: PathBuf,
+    pub bad_quality: PathBuf,
+    pub bad_quality_landscape: PathBuf,
+    pub bad_quality_square: PathBuf,
+    pub bad_quality_portrait: PathBuf,
+    pub video: PathBuf,
+    pub errors: PathBuf,
+}
 
-    let destinations: Vec<&PathBuf> = vec![
-        &dwall,
-        &dother,
-        &dsquare,
-        &dbadquality,
-        &dbadqualitylandscape,
-        &dbadqualitysquare,
-        &dbadqualityportrait,
-        &dvideo,
-        &derrors,
-    ];
-    // make folders
-    for d in &destinations {
-        match fs::create_dir(d) {
-            Ok(_) => pcount("dir"),
-            _ => (),
+impl Directories {
+    fn new(base_dir: &str) -> Self {
+        let bad_quality = Path::new(base_dir).join("bad_quality");
+        let dirs = Directories {
+            wall: Path::new(base_dir).join("wall"),
+            other: Path::new(base_dir).join("other"),
+            square: Path::new(base_dir).join("square"),
+            bad_quality: bad_quality.clone(),
+            bad_quality_landscape: bad_quality.join("l"),
+            bad_quality_square: bad_quality.join("s"),
+            bad_quality_portrait: bad_quality.join("p"),
+            video: Path::new(base_dir).join("video"),
+            errors: Path::new(base_dir).join("errors"),
         };
+        dirs.create_all();
+        dirs
     }
+
+    fn create_all(&self) {
+        let paths = [
+            &self.wall,
+            &self.other,
+            &self.square,
+            &self.bad_quality,
+            &self.bad_quality_landscape,
+            &self.bad_quality_square,
+            &self.bad_quality_portrait,
+            &self.video,
+            &self.errors,
+        ];
+        for path in paths.iter() {
+            match fs::create_dir(path) {
+                Ok(_) => pcount("dir"),
+                _ => (),
+            };
+        }
+    }
+}
+
+pub fn move_stuff(dir: String, choose: Option<String>) {
+    let directories = Directories::new(&dir);
+
     match fs::read_dir(&dir) {
         Ok(entries) => {
             for f in entries {
@@ -49,7 +73,7 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
                         if path.is_dir() {
                             continue;
                         }
-                        move_file(path, &destinations, choose.clone())
+                        move_file(path, &directories, choose.clone())
                     }
                     Err(err) => error_print(err.to_string()),
                 }
@@ -59,7 +83,7 @@ pub fn move_stuff(dir: String, choose: Option<String>) {
     }
 }
 
-fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, choose: Option<String>) {
+fn move_file(file: PathBuf, dests: &Directories, choose: Option<String>) {
     // get max width/height via conf.json
 
     let (min_w, min_h) = match choose {
@@ -70,20 +94,22 @@ fn move_file(file: PathBuf, dests: &Vec<&PathBuf>, choose: Option<String>) {
         None => (1080, 1080),
     };
 
-    let dwall = dests[0];
-    let dother = dests[1];
-    let dsquare = dests[2];
-    let dblandscape = dests[4];
-    let dbsquare = dests[5];
-    let dbportrait = dests[6];
-    let dvideo = dests[7];
-    let derrors = dests[8];
+    let dwall = &dests.wall;
+    let dother = &dests.other;
+    let dsquare = &dests.square;
+    let dblandscape = &dests.bad_quality_landscape;
+    let dbsquare = &dests.bad_quality_square;
+    let dbportrait = &dests.bad_quality_portrait;
+    let dvideo = &dests.video;
+    let derrors = &dests.errors;
 
     let extension = file.extension().unwrap();
+
     if extension == "mp4" {
         wrap_rename(file, dvideo, "yellow", "video");
         return;
     }
+
     let (width, height) = match image_dimensions(&file) {
         Ok(val) => val,
         Err(_) => (1, 1),
