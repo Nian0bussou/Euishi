@@ -12,22 +12,10 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
     use CmdsOptions::Move;
     use CmdsOptions::Scramble;
 
-    let mut dirs: Vec<String> = utils::get_folders(&path);
-    dirs.retain(|d| !d.contains("_______________"));
-    let dirs = dirs;
-
     let choose = match opt.clone() {
         Move { choose_dirs } => choose_dirs,
         Scramble { choose_dirs } => choose_dirs,
         _ => None,
-    };
-
-    let dirs = match choose.clone() {
-        Some(choose) => match utils::adding_dirs(choose) {
-            Ok(e) => e,
-            Err(_) => dirs,
-        },
-        None => dirs,
     };
 
     let _t = TimingGuard::new();
@@ -36,28 +24,18 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
     use scrambling::scramble;
     use thread::spawn;
     // + threads -->
-    let handles: Vec<_> = match opt {
-        Move { .. } => dirs
-            .clone()
-            .into_iter()
-            .map(|source| {
-                spawn({
-                    let value = choose.clone();
-                    move || move_stuff(source, value)
-                })
-            })
-            .collect(),
-        Scramble { .. } => dirs
-            .clone()
-            .into_iter()
-            .map(|source| spawn(move || scramble(source)))
-            .collect(),
+    let handles = match opt {
+        Move { .. } => spawn({
+            let value = choose.clone();
+            move || move_stuff(path, value)
+        }),
+        Scramble { .. } => spawn({
+            move || scramble(path)
+        }),
         _ => panic!("not supposed to get here"),
     };
     // -
-    for handle in handles {
-        handle.join().unwrap();
-    }
+    handles.join().unwrap();
 
     exit_msg();
 }

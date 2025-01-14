@@ -35,10 +35,7 @@ pub fn main() {
             //
             t_tmps(gfpaht, verbose)
         }
-        CmdsOptions::Invalid => {
-            //
-            ()
-        }
+        CmdsOptions::Invalid => { }
     }
 }
 

@@ -131,7 +131,6 @@ pub fn scramble_log(okerr: bool, f: PathBuf) {
         false => println!("{}", falsems),
     }
 }
-// TODO replacing to json config
 pub fn adding_dirs(path_json: String) -> std::io::Result<Vec<String>> {
     let config = g_json_attrs(path_json);
     let paths = config.paths;
