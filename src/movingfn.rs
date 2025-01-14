@@ -11,6 +11,7 @@ use std::{
 };
 
 pub fn move_stuff(dir: String, choose: Option<String>) {
+    // making the directories used
     let dwall = Path::new(&dir).join("wall");
     let dother = Path::new(&dir).join("other");
     let dsquare = Path::new(&dir).join("square");

@@ -6,6 +6,8 @@ use crate::utils::exit_msg;
 use crate::CmdsOptions;
 use crate::TimingGuard;
 use core::panic;
+use movingfn::move_stuff;
+use scrambling::scramble;
 use std::thread;
 
 pub fn t_sorting(path: String, opt: CmdsOptions) {
@@ -20,22 +22,14 @@ pub fn t_sorting(path: String, opt: CmdsOptions) {
 
     let _t = TimingGuard::new();
 
-    use movingfn::move_stuff;
-    use scrambling::scramble;
-    use thread::spawn;
-    // + threads -->
-    let handles = match opt {
-        Move { .. } => spawn({
+    match opt {
+        Move { .. } => {
             let value = choose.clone();
-            move || move_stuff(path, value)
-        }),
-        Scramble { .. } => spawn({
-            move || scramble(path)
-        }),
+            move_stuff(path, value)
+        }
+        Scramble { .. } => scramble(path),
         _ => panic!("not supposed to get here"),
     };
-    // -
-    handles.join().unwrap();
 
     exit_msg();
 }
